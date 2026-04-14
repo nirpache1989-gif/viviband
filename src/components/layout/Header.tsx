@@ -32,7 +32,7 @@ export default function Header({ className }: HeaderProps) {
           href="/"
           className="font-display text-2xl tracking-wider text-text-primary"
         >
-          VIVIBAND
+          CORES DO SAMBA
         </Link>
 
         {/* Desktop Nav */}

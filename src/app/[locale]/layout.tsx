@@ -9,7 +9,7 @@ import Footer from "@/components/layout/Footer";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "ViviBand",
+  title: "Cores do Samba",
   description: "Portuguese Rock Band",
   icons: { icon: "/favicon.ico" },
 };

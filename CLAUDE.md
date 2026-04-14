@@ -1,4 +1,4 @@
-# ViviBand — Project Documentation
+# Cores do Samba — Project Documentation
 
 ## Overview
 Portuguese rock band website built with Next.js 14 (App Router) + TypeScript + Tailwind CSS.
@@ -85,7 +85,7 @@ messages/
 - All components accept `className` prop for GSAP ref compatibility
 - No inline styles that conflict with GSAP transforms
 - Admin auth: password from `ADMIN_PASSWORD` env → httpOnly cookie
-- Band name "ViviBand" is a placeholder — will be swapped later
+- Band name: "Cores do Samba"
 
 ## Environment Variables
 See `.env.local.example` for all required variables.

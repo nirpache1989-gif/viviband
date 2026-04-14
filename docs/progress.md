@@ -1,4 +1,4 @@
-# ViviBand — Build Progress
+# Cores do Samba — Build Progress
 
 ## Phase 1: Project Scaffold + Design System - COMPLETE
 - [x] Next.js 14 scaffold (App Router, TypeScript, Tailwind)
@@ -66,7 +66,7 @@
 2. Set environment variables (see .env.local.example)
 3. Deploy to Vercel
 4. Sign up for Resend and add API key
-5. Replace "ViviBand" placeholder with actual band name
+5. ~~Replace "ViviBand" placeholder with actual band name~~ DONE — now "Cores do Samba"
 6. Wire GSAP animations (lib/gsap.ts is ready, components have data-animate attrs)
 
 ## Known Issues

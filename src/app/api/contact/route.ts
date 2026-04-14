@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     await getResend().emails.send({
-      from: "ViviBand Website <onboarding@resend.dev>",
+      from: "Cores do Samba Website <onboarding@resend.dev>",
       to: bandEmail,
       subject: `[Website] ${subject}`,
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,

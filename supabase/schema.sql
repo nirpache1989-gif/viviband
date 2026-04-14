@@ -1,4 +1,4 @@
--- ViviBand Database Schema
+-- Cores do Samba Database Schema
 -- Run this in the Supabase SQL Editor to set up all tables
 
 -- ============================================
@@ -8,7 +8,7 @@
 -- Band info (singleton row)
 CREATE TABLE band_info (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL DEFAULT 'ViviBand',
+  name TEXT NOT NULL DEFAULT 'Cores do Samba',
   bio_pt TEXT,
   bio_en TEXT,
   logo_url TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE band_info (
 );
 
 -- Insert default row
-INSERT INTO band_info (name) VALUES ('ViviBand');
+INSERT INTO band_info (name) VALUES ('Cores do Samba');
 
 -- Shows
 CREATE TABLE shows (
@@ -59,7 +59,7 @@ CREATE TABLE contact (
 );
 
 -- Insert default contact row
-INSERT INTO contact (email) VALUES ('contact@viviband.com');
+INSERT INTO contact (email) VALUES ('contact@coresdosamba.com');
 
 -- ============================================
 -- ROW LEVEL SECURITY (RLS)

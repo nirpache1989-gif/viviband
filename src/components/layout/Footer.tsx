@@ -20,7 +20,7 @@ export default function Footer({ className }: FooterProps) {
       <div className="mx-auto flex max-w-content flex-col items-center gap-8 md:flex-row md:justify-between">
         {/* Band Name */}
         <span className="font-display text-lg tracking-wider text-text-primary">
-          VIVIBAND
+          CORES DO SAMBA
         </span>
 
         {/* Social Links */}
@@ -44,7 +44,7 @@ export default function Footer({ className }: FooterProps) {
 
         {/* Copyright */}
         <p className="font-body text-xs text-text-secondary">
-          &copy; {new Date().getFullYear()} ViviBand. {t("rights")}
+          &copy; {new Date().getFullYear()} Cores do Samba. {t("rights")}
         </p>
       </div>
     </footer>

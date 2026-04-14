@@ -133,7 +133,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                 {t("email")}
               </h3>
               <p className="font-body text-sm text-text-secondary">
-                contact@viviband.com
+                contact@coresdosamba.com
               </p>
             </div>
             <div className="flex gap-6">
