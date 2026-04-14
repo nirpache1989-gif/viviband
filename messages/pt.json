@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Início",
+    "shows": "Concertos",
+    "music": "Música",
+    "gallery": "Galeria",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "tagline": "Rock que vem de dentro"
+  },
+  "shows": {
+    "title": "Concertos",
+    "upcoming": "Próximos",
+    "past": "Anteriores",
+    "getTickets": "Bilhetes",
+    "noUpcoming": "Sem concertos agendados de momento.",
+    "noPast": "Ainda sem concertos realizados.",
+    "date": "Data",
+    "venue": "Local",
+    "city": "Cidade"
+  },
+  "music": {
+    "title": "Música",
+    "watchVideo": "Ver Vídeo",
+    "releaseYear": "Ano"
+  },
+  "gallery": {
+    "title": "Galeria",
+    "close": "Fechar"
+  },
+  "contact": {
+    "title": "Contacto",
+    "name": "Nome",
+    "email": "Email",
+    "subject": "Assunto",
+    "message": "Mensagem",
+    "send": "Enviar",
+    "sending": "A enviar...",
+    "success": "Mensagem enviada com sucesso!",
+    "error": "Erro ao enviar mensagem. Tente novamente."
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "followUs": "Segue-nos"
+  },
+  "admin": {
+    "title": "Administração",
+    "login": "Entrar",
+    "password": "Palavra-passe",
+    "logout": "Sair",
+    "dashboard": "Painel",
+    "shows": "Concertos",
+    "music": "Música",
+    "gallery": "Galeria",
+    "bandInfo": "Info da Banda",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirmDelete": "Tem a certeza que quer eliminar?",
+    "upload": "Carregar",
+    "noResults": "Sem resultados.",
+    "stats": {
+      "upcomingShows": "Próximos Concertos",
+      "totalTracks": "Faixas",
+      "galleryImages": "Fotos",
+      "title": "Resumo"
+    },
+    "fields": {
+      "date": "Data",
+      "venue": "Local",
+      "city": "Cidade",
+      "country": "País",
+      "ticketUrl": "Link Bilhetes",
+      "isPast": "Concerto Passado",
+      "trackTitle": "Título",
+      "youtubeUrl": "URL YouTube",
+      "coverUrl": "URL Capa",
+      "releaseYear": "Ano de Lançamento",
+      "caption": "Legenda",
+      "bandName": "Nome da Banda",
+      "bio": "Biografia",
+      "logoUrl": "URL do Logo",
+      "instagram": "Instagram",
+      "youtube": "YouTube",
+      "facebook": "Facebook",
+      "email": "Email",
+      "phone": "Telefone"
+    }
+  },
+  "common": {
+    "loading": "A carregar...",
+    "error": "Ocorreu um erro.",
+    "viewAll": "Ver Tudo",
+    "back": "Voltar"
+  }
+}
