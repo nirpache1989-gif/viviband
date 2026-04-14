@@ -10,7 +10,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Cores do Samba",
-  description: "Portuguese Rock Band",
+  description: "Brazilian Samba Band",
   icons: { icon: "/favicon.ico" },
 };
 

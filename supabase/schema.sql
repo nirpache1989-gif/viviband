@@ -26,7 +26,7 @@ CREATE TABLE shows (
   date TIMESTAMPTZ NOT NULL,
   venue TEXT NOT NULL,
   city TEXT NOT NULL,
-  country TEXT NOT NULL DEFAULT 'Portugal',
+  country TEXT NOT NULL DEFAULT 'Brazil',
   ticket_url TEXT,
   is_past BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()

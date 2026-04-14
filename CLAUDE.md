@@ -1,7 +1,7 @@
 # Cores do Samba — Project Documentation
 
 ## Overview
-Portuguese rock band website built with Next.js 14 (App Router) + TypeScript + Tailwind CSS.
+Brazilian samba band website built with Next.js 14 (App Router) + TypeScript + Tailwind CSS.
 Content is managed through an /admin panel. Hosted on Vercel with Supabase backend.
 
 ## Tech Stack
