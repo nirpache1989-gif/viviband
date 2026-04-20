@@ -26,15 +26,41 @@ Three options surfaced in session 3; user to pick:
 
 Implementation if (b): in `src/components/layout/Footer.tsx`, add a `useState` counter on the year span; when it hits 5 within a 2s window, `router.push('/admin/login')`. ~15 lines. Reset counter on timeout.
 
-### D2. IA decision (from `docs/session-3-qa-findings.md` C2)
+### D2. IA decision — the core question of session 4
 
-Status quo today: 5 separate routes. Alternatives surfaced:
+**User raised this explicitly at the end of session 3:** the homepage scrolls through Shows preview + Music player preview + marquees, and the same content is reachable as full `/shows` and `/music` pages from the top nav. Same content, two surfaces. Feels redundant.
 
-1. Status quo (5 routes) — thin content, traditional
-2. Single-page scroll — all sections on `/`, depth pages redirect to anchors
-3. **Hybrid (recommended)** — Home becomes a long scroll (Shows preview + Music + Gallery + Contact all anchored); `/shows` and `/music` remain as deep archives once she fills them
+Current shape, diagrammed:
 
-Decision gate: wait until Viviane has added 5+ real shows and 5+ real tracks. Before that, the "thin content" problem is hypothetical.
+```
+Home (/)                Top nav
+├── Hero                ├── Shows    → /shows (full list)
+├── Marquee             ├── Música   → /music  (full list + albums)
+├── Shows preview (3)   ├── Galeria  → /gallery (9-tile masonry)
+├── Marquee             └── Contato  → /contact (form + info)
+├── Music preview (3)
+```
+
+So Home = a taste of everything; subpages = the full version. Traditional band-site shape, but with thin DB content today (3 shows, 0 uploaded tracks, 0 uploaded photos) it reads as duplicated sparseness.
+
+**Three shapes to pick from:**
+
+1. **Status quo (5 routes).** Keep as-is. Works fine once she has 10+ shows, 10+ tracks — the Home preview becomes a genuine teaser and the subpages become real archives. Cost: today it feels like the same content twice.
+
+2. **Single-page scroll.** Home holds everything (hero → shows → music → gallery → contact). Top nav items scroll to `#anchors` instead of navigating routes. `/shows`, `/music`, etc. redirect to `/#shows`, `/#music`. **Matches the `assets/` prototype energy** — the prototype is 5 HTML files but designed to *feel* like one living page. Cost: heavier initial payload; harder to deepen any one section later without re-splitting.
+
+3. **Hybrid (recommended).** Home becomes the long scroll. `/shows` and `/music` stay as deep archives for when she fills them up. Gallery and Contact collapse to Home anchors (since they're naturally lighter). Top nav on Home = anchors; on archive pages = real links. Cost: slight asymmetry in how nav behaves depending on which page you're on.
+
+**Recommendation:** start with **option 2 (single-page)** for launch, revisit once she has real content density. Reason: she's launching with near-empty DB; a single scrolling page with sample content sells the aesthetic better than a nav with three pages that all say "no results yet." If/when she has 10+ shows, we can split Shows + Music back out into real archive pages.
+
+**Migration sketch for option 2:**
+- Keep `/shows`, `/music`, `/gallery`, `/contact` routes but each becomes a `redirect(`/${locale}#${section}`)` via `next/navigation`
+- Home page (`src/app/[locale]/page.tsx`) grows sections with `id="shows"`, `id="music"`, etc.
+- Top nav in `Header.tsx` changes `<Link href="/shows">` → `<a href={isHome ? "#shows" : "/#shows"}>`
+- Gallery + ContactForm move into Home as `<section id="gallery">` / `<section id="contact">`
+- `useScrollReveal` already handles the reveal animations for new sections
+
+**Decision gate:** user must pick 1/2/3 before any code lands. Don't assume.
 
 ### D3. Transitions decision (from findings C3)
 
