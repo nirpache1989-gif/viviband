@@ -2,14 +2,15 @@
 
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const TRIGGER_COUNT = 5;
 const TRIGGER_WINDOW_MS = 2000;
 
-export default function FooterYear({ year }: { year: number }) {
+export default function FooterCopyright({ year }: { year: number }) {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("footer");
   const count = useRef(0);
   const timer = useRef<number | null>(null);
 
@@ -27,8 +28,12 @@ export default function FooterYear({ year }: { year: number }) {
   }
 
   return (
-    <span onClick={handleClick} style={{ cursor: "default" }}>
-      {year}
+    <span
+      onClick={handleClick}
+      style={{ cursor: "default", userSelect: "none" }}
+      aria-label="© copyright"
+    >
+      © {year} Cores do Samba — {t("rights")}
     </span>
   );
 }

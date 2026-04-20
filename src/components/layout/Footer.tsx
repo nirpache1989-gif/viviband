@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import FooterYear from "./FooterYear";
+import FooterCopyright from "./FooterYear";
 
 interface FooterProps {
   instagram?: string | null;
@@ -70,9 +70,7 @@ export default function Footer({ instagram, youtube, facebook }: FooterProps) {
         </div>
 
         <div className="footer__bottom">
-          <span>
-            © <FooterYear year={new Date().getFullYear()} /> Cores do Samba — {t("rights")}
-          </span>
+          <FooterCopyright year={new Date().getFullYear()} />
           <span>{t("location")}</span>
         </div>
       </div>
