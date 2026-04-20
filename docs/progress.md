@@ -80,9 +80,57 @@ Admin-gated **Tweaks panel** (visible only when `admin-session` cookie is set):
 ### Build status
 - `npm run build` passes — 27 pages, no TS / ESLint errors
 
-## Session 3 — Deploy (PENDING)
-Blocked on two things from Viviane/Nir:
-1. **Nir accepts Supabase invite** (email to `nirpache1989@gmail.com`)
-2. **Viviane generates Vercel API token** — free-tier Hobby plan doesn't support team members, so we use a personal access token instead
+## Session 3 — Admin polish + public DB wiring + QA (COMPLETE)
 
-See `docs/session-3-deploy.md` for the full playbook.
+Waiting-time session — Viviane is handling her own Vercel deploy whenever she's ready, so we used the gap to polish the admin UX and fix structural issues in the public site before launch.
+
+### Track B — Admin polish (9 items)
+- New `/admin/contact` page + API route for email/phone
+- Palette/font/grain section inside `/admin/band-info` form (mirrors floating Tweaks panel)
+- Shared `<AdminStatus>` component for save/error toasts across all 5 admin forms
+- Image preview in gallery upload + cover-URL preview in music form
+- Help text under URL + social fields (YouTube format, Instagram handle format, image-link hint)
+- PT login error ("Palavra-passe inválida. Tenta de novo.")
+- Translated gallery "Image" label (was hardcoded English)
+- Admin forms now render with sensible defaults when DB is unreachable (no more blank "no results")
+- Default country for new shows: Portugal → Brasil
+
+### Track C — QA + coherence review
+Found and fixed five **Must-Fix** items before they became production bugs:
+1. **Public pages used hardcoded placeholder data** — homepage, /shows, /music, /gallery never read from Supabase. Wired them all via new `src/lib/content.ts` SSR helper with graceful fallback to sample rows.
+2. **Footer "Listen" column was all `href="#"`** — wired to `band_info.instagram/youtube/facebook`; dropped Spotify/Apple/Tidal until she has streaming fields in DB
+3. **Footer "Newsletter" column was all dead links** — removed entirely; honest placeholder > fake button
+4. **ContactForm social icons were `href="#"`** — wired to `band_info` socials, Spotify icon dropped
+5. **Gallery lightbox close showed literal `\u00d7`** — replaced with `×` glyph (same bug fixed on ContactForm submit arrow)
+
+Also: `docs/session-3-qa-findings.md` captures Should-fix (IA, transitions) and Nice-to-have items for session 4 to decide on.
+
+### Floating TweaksPanel
+Now hidden on `/admin/*` routes (was cluttering admin screens). Stays on public pages where live-preview makes sense.
+
+### Hidden admin entry
+5× click on the footer `© 2026` year → `/admin/login`. Invisible to casual visitors. Vivi also bookmarks `/pt/admin/login` for fast access.
+
+### Refactors
+- Extracted `PALETTES`/`FONTS`/`PALETTE_SWATCH` constants from `TweaksPanel.tsx` to `src/lib/siteTheme.ts` — now imported by both the floating panel and the admin form
+- Central `src/lib/content.ts` for all SSR Supabase fetches with try/catch wrappers
+- New `src/components/admin/AdminStatus.tsx` and `src/components/fx/BrtClock.tsx` (the BRT clock was inlined in /shows; extracted so the page could become a server component)
+
+### Deploy status
+- Code is committed and pushed to `main` (commit `b50bd30` + `<next-commit>` for hidden-admin)
+- Real Supabase anon key + Resend key + admin password now live in `.env.local` (gitignored) for local dev
+- Schema is already run on Viviane's Supabase project; no DB migration needed
+- Env-var block ready to paste into Vercel when she deploys (see `docs/session-3-deploy.md` §3a)
+
+### Build status
+- `npm run build` passes, 29 pages (up from 27 — new `/admin/contact` in both locales), 0 TS/ESLint errors
+
+## Session 4 — Deferred work (PENDING)
+
+See `docs/session-4-plan.md` for the full breakdown. Headlines:
+- D2/D3 — IA restructure + page transitions (user-decision gated, wait for real content)
+- D4 — Streaming-link columns on `band_info` (Spotify/Apple/Tidal)
+- D5 — Post-launch polish (Supabase BR region, Resend sender domain, custom domain)
+- E1 — Newsletter signup (Resend audiences)
+- E2-E7 — EPK page, real music player, IG feed, analytics, etc.
+- F1-F5 — Tech debt (dead gsap imports, React cache wrapping, etc.)
