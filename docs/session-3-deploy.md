@@ -2,6 +2,13 @@
 
 Everything needed to ship Cores do Samba live, end-to-end. Execute top-to-bottom.
 
+> ⚠️ **Secrets are NOT committed to this repo.** The keys and passwords live
+> only in `.env.local` (local development) and in Vercel's Environment
+> Variables dashboard (production). If you see a placeholder like
+> `<RESEND_API_KEY>` in this file, that's intentional — look up the real
+> value in `.env.local` or ask Viviane directly. Never paste a real secret
+> into a markdown file, a commit, or chat history that might be committed.
+
 **Deployment path chosen:** Viviane deploys via her own Vercel + GitHub integration (she's already a collaborator on the repo). This is simpler than the access-token CLI flow and doesn't require Nir to run commands. The old CLI/token path is documented at the bottom as a fallback.
 
 ---
@@ -12,8 +19,8 @@ Before starting, confirm:
 
 - [ ] **Nir accepted Supabase invite** to `nirpache1989@gmail.com` — makes her Supabase project visible in your dashboard.
 - [ ] **Viviane is a GitHub collaborator** on `nirpache1989-gif/viviband` — verified via `gh api repos/nirpache1989-gif/viviband/collaborators`. (Already done.)
-- [ ] Supabase anon key in hand: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwemd5a3RpaWN2a3N2enp0ZHVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODQ5MTEsImV4cCI6MjA5MTc2MDkxMX0.Hzybnk0z9hk7PER3ojfvZw8HgM4my3aoVX3DDtSWBew`
-- [ ] Resend API key: `re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9`
+- [ ] Supabase anon key in hand: `<SUPABASE_ANON_KEY>`
+- [ ] Resend API key: `<RESEND_API_KEY>`
 - [ ] Contact email: `vivianesalvadordossantos@gmail.com`
 - [ ] GitHub repo up-to-date: `nirpache1989-gif/viviband` with session-2 design overhaul merged (commit `d729d10` or later)
 
@@ -53,9 +60,9 @@ Paste this into WhatsApp / email, filled in:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://vpzgyktiicvksvzztdun.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwemd5a3RpaWN2a3N2enp0ZHVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODQ5MTEsImV4cCI6MjA5MTc2MDkxMX0.Hzybnk0z9hk7PER3ojfvZw8HgM4my3aoVX3DDtSWBew
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<SUPABASE_ANON_KEY>
 ADMIN_PASSWORD=<the-password-from-step-2>
-RESEND_API_KEY=re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9
+RESEND_API_KEY=<RESEND_API_KEY>
 BAND_CONTACT_EMAIL=vivianesalvadordossantos@gmail.com
 ```
 
@@ -166,7 +173,7 @@ vercel link --yes --token=$VERCEL_TOKEN
 echo "https://vpzgyktiicvksvzztdun.supabase.co" | vercel env add NEXT_PUBLIC_SUPABASE_URL production --token=$VERCEL_TOKEN
 echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --token=$VERCEL_TOKEN
 echo "<password>" | vercel env add ADMIN_PASSWORD production --token=$VERCEL_TOKEN
-echo "re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9" | vercel env add RESEND_API_KEY production --token=$VERCEL_TOKEN
+echo "<RESEND_API_KEY>" | vercel env add RESEND_API_KEY production --token=$VERCEL_TOKEN
 echo "vivianesalvadordossantos@gmail.com" | vercel env add BAND_CONTACT_EMAIL production --token=$VERCEL_TOKEN
 
 vercel deploy --prod --token=$VERCEL_TOKEN
