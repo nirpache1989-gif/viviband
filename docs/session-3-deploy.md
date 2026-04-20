@@ -2,6 +2,8 @@
 
 Everything needed to ship Cores do Samba live, end-to-end. Execute top-to-bottom.
 
+**Deployment path chosen:** Viviane deploys via her own Vercel + GitHub integration (she's already a collaborator on the repo). This is simpler than the access-token CLI flow and doesn't require Nir to run commands. The old CLI/token path is documented at the bottom as a fallback.
+
 ---
 
 ## 0. Prerequisites checklist
@@ -9,11 +11,11 @@ Everything needed to ship Cores do Samba live, end-to-end. Execute top-to-bottom
 Before starting, confirm:
 
 - [ ] **Nir accepted Supabase invite** to `nirpache1989@gmail.com` — makes her Supabase project visible in your dashboard.
-- [ ] **Viviane sent Vercel access token** (from `vercel.com/account/tokens`, scope: Full Account) — alternative to team-member invites, works on Hobby plan.
+- [ ] **Viviane is a GitHub collaborator** on `nirpache1989-gif/viviband` — verified via `gh api repos/nirpache1989-gif/viviband/collaborators`. (Already done.)
 - [ ] Supabase anon key in hand: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwemd5a3RpaWN2a3N2enp0ZHVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODQ5MTEsImV4cCI6MjA5MTc2MDkxMX0.Hzybnk0z9hk7PER3ojfvZw8HgM4my3aoVX3DDtSWBew`
 - [ ] Resend API key: `re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9`
 - [ ] Contact email: `vivianesalvadordossantos@gmail.com`
-- [ ] GitHub repo up-to-date: `nirpache1989-gif/viviband` with session-2 design overhaul merged
+- [ ] GitHub repo up-to-date: `nirpache1989-gif/viviband` with session-2 design overhaul merged (commit `d729d10` or later)
 
 ---
 
@@ -41,51 +43,37 @@ Save the output — Viviane will use this to log into `/admin` on the live site.
 
 ---
 
-## 3. Deploy to her Vercel via API token
+## 3. Deploy to her Vercel via GitHub integration (preferred)
 
-### 3a. Install Vercel CLI (if not already)
+Viviane handles this herself from her Vercel dashboard. Nir sends her the env vars and waits for the URL.
 
-```bash
-npm i -g vercel
+### 3a. Send Viviane the env vars message
+
+Paste this into WhatsApp / email, filled in:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://vpzgyktiicvksvzztdun.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwemd5a3RpaWN2a3N2enp0ZHVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODQ5MTEsImV4cCI6MjA5MTc2MDkxMX0.Hzybnk0z9hk7PER3ojfvZw8HgM4my3aoVX3DDtSWBew
+ADMIN_PASSWORD=<the-password-from-step-2>
+RESEND_API_KEY=re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9
+BAND_CONTACT_EMAIL=vivianesalvadordossantos@gmail.com
 ```
 
-### 3b. Link the repo to her Vercel
+Also send the PDF `docs/cores-do-samba-vercel-deploy.pdf` — it walks her through the Vercel import UI.
 
-From the project root:
+### 3b. Wait for her to deploy
 
-```bash
-export VERCEL_TOKEN="<paste-her-token-here>"
-vercel link --yes --token=$VERCEL_TOKEN
-```
+She will:
+1. Go to https://vercel.com/new
+2. Connect GitHub if she hasn't already (grant access to at least `nirpache1989-gif/viviband`)
+3. Import the repo
+4. Paste the env vars (Vercel's env-var input accepts a whole `.env` block pasted at once)
+5. Click Deploy
+6. Send Nir the live URL
 
-When prompted for scope, pick **her personal account** (should be the only option with her token).
+### 3c. Alternative: CLI via access token (fallback)
 
-Project name suggestion: `cores-do-samba` → produces `cores-do-samba.vercel.app`.
-
-### 3c. Set environment variables
-
-Run each of these (production scope):
-
-```bash
-echo "https://vpzgyktiicvksvzztdun.supabase.co" | vercel env add NEXT_PUBLIC_SUPABASE_URL production --token=$VERCEL_TOKEN
-echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwemd5a3RpaWN2a3N2enp0ZHVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODQ5MTEsImV4cCI6MjA5MTc2MDkxMX0.Hzybnk0z9hk7PER3ojfvZw8HgM4my3aoVX3DDtSWBew" | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --token=$VERCEL_TOKEN
-echo "<the-password-from-step-2>" | vercel env add ADMIN_PASSWORD production --token=$VERCEL_TOKEN
-echo "re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9" | vercel env add RESEND_API_KEY production --token=$VERCEL_TOKEN
-echo "vivianesalvadordossantos@gmail.com" | vercel env add BAND_CONTACT_EMAIL production --token=$VERCEL_TOKEN
-```
-
-Pull them locally too for preview builds:
-```bash
-vercel env pull --token=$VERCEL_TOKEN
-```
-
-### 3d. Deploy
-
-```bash
-vercel deploy --prod --token=$VERCEL_TOKEN
-```
-
-Wait for the build, then copy the production URL it prints (e.g. `https://cores-do-samba.vercel.app`).
+If for any reason the GitHub integration doesn't work (e.g. she can't grant Vercel access to Nir's repo from her GitHub), fall back to CLI with her access token. See **Appendix A** at the end of this file.
 
 ---
 
@@ -151,3 +139,35 @@ When everything is green:
 | Tweaks panel never appears after login | `admin-session` cookie blocked or domain mismatch | Confirm login POST returned 200 and cookie set; check DevTools → Application → Cookies |
 | Contact form "Failed to send" | Resend key missing or `BAND_CONTACT_EMAIL` unset | Check Resend dashboard → Logs; confirm both env vars present |
 | Palette change doesn't persist for visitors | `001_site_settings.sql` not run | Run the migration — panel writes succeed silently but SSR can't read missing columns |
+
+---
+
+## Appendix A — CLI deploy via Vercel access token (fallback)
+
+Only use this if the GitHub-integration path doesn't work (e.g. GitHub-GitLab-Bitbucket dropdown doesn't show the repo).
+
+### A1. Install Vercel CLI
+
+```bash
+npm i -g vercel
+```
+
+### A2. Ask Viviane for an access token
+
+Generate at https://vercel.com/account/tokens — scope "Full Account", no expiration.
+
+### A3. Link + deploy
+
+```bash
+export VERCEL_TOKEN="<paste-her-token>"
+vercel link --yes --token=$VERCEL_TOKEN
+# (pick her personal scope)
+
+echo "https://vpzgyktiicvksvzztdun.supabase.co" | vercel env add NEXT_PUBLIC_SUPABASE_URL production --token=$VERCEL_TOKEN
+echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --token=$VERCEL_TOKEN
+echo "<password>" | vercel env add ADMIN_PASSWORD production --token=$VERCEL_TOKEN
+echo "re_WQAc7PsB_L4Mp3gi62nx6UgfU89q9m7y9" | vercel env add RESEND_API_KEY production --token=$VERCEL_TOKEN
+echo "vivianesalvadordossantos@gmail.com" | vercel env add BAND_CONTACT_EMAIL production --token=$VERCEL_TOKEN
+
+vercel deploy --prod --token=$VERCEL_TOKEN
+```
