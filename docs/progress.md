@@ -1,74 +1,88 @@
 # Cores do Samba — Build Progress
 
-## Phase 1: Project Scaffold + Design System - COMPLETE
-- [x] Next.js 14 scaffold (App Router, TypeScript, Tailwind)
-- [x] Dependencies: gsap, @supabase/supabase-js, next-intl, next-themes, resend
-- [x] Design system: CSS variables in `src/styles/globals.css`
-- [x] Tailwind config with custom colors/fonts from CSS variables
-- [x] Lib files: gsap.ts (GSAP+ScrollTrigger), supabase.ts (lazy-init), resend.ts (lazy-init)
-- [x] i18n setup: routing.ts, navigation.ts, i18n.ts (request config)
-- [x] Translation files: messages/pt.json, messages/en.json
-- [x] Middleware: locale routing + admin auth protection
-- [x] Type definitions: src/types/database.ts
-- [x] CLAUDE.md, docs/progress.md, .env.local.example
-- [x] .claude/launch.json (dev server config with autoPort)
-- [x] Build verified
+## Session 1 — Scaffold (COMPLETE)
+- Next.js 14 scaffold (App Router, TypeScript, Tailwind)
+- Supabase + Resend + next-intl (PT default, EN) set up
+- Admin panel: login + CRUD for shows / music / gallery / band-info
+- API routes + middleware auth
+- 27 pages built + verified
 
-## Phase 2: Layout + Shared Components - COMPLETE
-- [x] Root layout delegates to [locale]/layout.tsx
-- [x] Locale layout with NextIntlClientProvider, Header, Footer
-- [x] Header: nav links, language toggle, mobile hamburger menu
-- [x] Footer: band name, social links (IG/YT/FB), copyright
-- [x] LanguageToggle: PT/EN switcher using next-intl navigation
-- [x] Button: primary/secondary/ghost variants, sm/md/lg sizes, Link support
-- [x] Card: bg-secondary with border, optional hover effect
-- [x] Modal: overlay, close button, escape key, click outside, scroll lock
-- [x] Build verified
+## Session 2 — Real content + Design overhaul (COMPLETE)
 
-## Phase 3: Public Pages - COMPLETE
-- [x] Homepage: Hero + ShowsList preview + MusicPlayer preview + CTAs
-- [x] Hero: full-viewport, asymmetric typographic treatment, scroll indicator
-- [x] Shows page: upcoming/past tabs, date/venue/city cards, ticket buttons
-- [x] Music page: track grid with lazy YouTube embed, cover fallback (VB initials)
-- [x] Gallery page: masonry grid with varied aspect ratios, lightbox modal
-- [x] Contact page: form (name/email/subject/message) + contact info sidebar
-- [x] All sections have data-animate attributes for GSAP readiness
-- [x] All pages use placeholder data (ready to wire to Supabase)
-- [x] Build verified
+### Renaming + origin
+- Placeholder "ViviBand" → real name **Cores do Samba**
+- Site description: Portuguese rock band → **Brazilian samba band** (Salvador, Bahia)
+- Default country on `shows` table: Portugal → Brazil
+- Added band identity: S 12°58′ — W 38°30′, "um axé só nosso", orixá-themed copy
 
-## Phase 4: API Routes - COMPLETE
-- [x] POST /api/contact — validate + send email via Resend
-- [x] POST/DELETE /api/admin/auth — password check, cookie set/clear
-- [x] CRUD /api/admin/shows — full CRUD with Supabase
-- [x] CRUD /api/admin/music — full CRUD with Supabase
-- [x] POST/GET/DELETE /api/admin/gallery — upload to Storage + DB
-- [x] GET/PUT /api/admin/band-info — singleton row update
-- [x] All routes marked force-dynamic for runtime-only deps
-- [x] Build verified
+### Design overhaul (ported from `assets/` prototype)
+New design system — wine-black `#140414` base with six orixá accent colors:
+- `--c-magenta` Iansã · `--c-cyan` Iemanjá · `--c-violet` orixá
+- `--c-vermillion` Xangô · `--c-amber` Oxum · `--c-jade` Oxóssi
 
-## Phase 5: Admin Panel - COMPLETE
-- [x] Login page: password form → set httpOnly cookie
-- [x] Admin layout: sidebar nav (desktop), horizontal scroll nav (mobile)
-- [x] Dashboard: stats cards (upcoming shows, tracks, photos)
-- [x] Shows management: table + add/edit/delete form with date picker
-- [x] Music management: table + add/edit/delete form
-- [x] Gallery management: file upload form + image grid with delete
-- [x] Band info editor: name, bio (pt/en), logo URL, social links
-- [x] Build verified
+Fonts: **Bricolage Grotesque** (display 800/600/400) + **Familjen Grotesk** (body) + **Caveat** (hand-drawn accents).
 
-## Phase 6: Database + Final Integration - COMPLETE
-- [x] supabase/schema.sql — all tables, RLS policies, storage bucket
-- [x] Final documentation update
-- [x] Build verified (27 pages + 6 API routes)
+Global FX system:
+- SVG grain overlay (tunable opacity)
+- CRT scanline overlay
+- Custom cursor (dot + trailing ring, hot-zone scale on interactive elements)
+- Colored brush-trail canvas following mouse
+- `fx-curtain` element for form-submit transition
+- Kinetic typography (per-letter sway + hover scatter on hero title)
+- Marquees (forward + reverse CSS-only)
+- Vinyl spinner + synthetic 48-bar waveform on music player
+- Gallery masonry grid (9 asymmetric tiles a–i) with lightbox
+- Scroll-reveal via `IntersectionObserver` on `[data-reveal]`
+- Respects `prefers-reduced-motion` and `(hover: none)` (touch devices get system cursor)
 
-## What's Next (for the client)
-1. Create Supabase project and run schema.sql
-2. Set environment variables (see .env.local.example)
-3. Deploy to Vercel
-4. Sign up for Resend and add API key
-5. ~~Replace "ViviBand" placeholder with actual band name~~ DONE — now "Cores do Samba"
-6. Wire GSAP animations (lib/gsap.ts is ready, components have data-animate attrs)
+Admin-gated **Tweaks panel** (visible only when `admin-session` cookie is set):
+- Live palette switcher: neon (default) / vinyl / tropical / dusk
+- Display font switcher: bricolage (default) / bebas / anton / archivo
+- Grain intensity slider 0–20 (7 default)
+- Changes persist to Supabase `band_info.site_palette`, `site_display_font`, `site_grain`
+- Visitors see Viviane's chosen look via SSR-injected `<style>` tag
 
-## Known Issues
-- None — all pages build and render correctly
-- Supabase env vars must be set for API routes to function
+### Files added
+- `src/components/fx/ClientFx.tsx` — mounts overlays + motion loops once at root
+- `src/components/fx/KineticHeading.tsx` — per-letter sway + scatter
+- `src/components/fx/TweaksPanel.tsx` — admin live editor
+- `src/components/sections/Marquee.tsx` — CSS-driven scroller
+- `src/hooks/useReducedMotion.ts`, `src/hooks/useScrollReveal.ts`
+- `src/lib/siteSettings.ts` — SSR fetch + CSS-var render
+- `supabase/migrations/001_site_settings.sql` — additive migration (3 new columns on `band_info`)
+
+### Files overhauled
+- `src/styles/globals.css` (complete rewrite)
+- `tailwind.config.ts` (new tokens + back-compat aliases for admin)
+- `src/app/[locale]/layout.tsx` (reads admin cookie, fetches settings, injects SSR palette)
+- `src/components/layout/{Header,Footer,LanguageToggle}.tsx`
+- `src/components/sections/{Hero,ShowsList,MusicPlayer,Gallery,ContactForm}.tsx`
+- All 5 public pages: `/`, `/shows`, `/music`, `/gallery`, `/contact`
+- `messages/{pt,en}.json` — new keys: hero, marquee, footer cols, info blocks, page ledes
+
+### Not touched (per plan)
+- Admin panel (`src/app/[locale]/admin/**`) — intentionally kept as-is
+- API routes, Supabase client, i18n routing
+- `lib/gsap.ts` (ready but unused; prototype uses raw RAF)
+
+### Accounts set up (via browser, Viviane's side)
+- Supabase project `vpzgyktiicvksvzztdun` created on her account
+- Resend account created
+- Vercel free Hobby account created
+- GitHub username: `vivianesalvadordossantos-ux` — added as collaborator on `nirpache1989-gif/viviband`
+
+### Keys received
+- Supabase URL: `https://vpzgyktiicvksvzztdun.supabase.co`
+- Supabase anon key: captured
+- Resend API key: captured
+- Contact email: `vivianesalvadordossantos@gmail.com`
+
+### Build status
+- `npm run build` passes — 27 pages, no TS / ESLint errors
+
+## Session 3 — Deploy (PENDING)
+Blocked on two things from Viviane/Nir:
+1. **Nir accepts Supabase invite** (email to `nirpache1989@gmail.com`)
+2. **Viviane generates Vercel API token** — free-tier Hobby plan doesn't support team members, so we use a personal access token instead
+
+See `docs/session-3-deploy.md` for the full playbook.
