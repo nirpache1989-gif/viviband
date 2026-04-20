@@ -96,6 +96,7 @@
   "admin": {
     "title": "Admin",
     "login": "Login",
+    "loginError": "Invalid password. Try again.",
     "password": "Password",
     "logout": "Logout",
     "dashboard": "Dashboard",
@@ -103,6 +104,7 @@
     "music": "Music",
     "gallery": "Gallery",
     "bandInfo": "Band Info",
+    "contactInfo": "Contact Info",
     "add": "Add",
     "edit": "Edit",
     "delete": "Delete",
@@ -111,6 +113,18 @@
     "confirmDelete": "Are you sure you want to delete?",
     "upload": "Upload",
     "noResults": "No results.",
+    "status": {
+      "saving": "Saving…",
+      "saved": "Saved",
+      "error": "Save failed"
+    },
+    "theme": {
+      "title": "Site Theme",
+      "palette": "Palette",
+      "font": "Display font",
+      "grain": "Grain",
+      "liveEditHint": "Save to apply. For live editing, open the panel in the bottom-right corner of any public page."
+    },
     "stats": {
       "upcomingShows": "Upcoming Shows",
       "totalTracks": "Tracks",
@@ -129,6 +143,7 @@
       "coverUrl": "Cover URL",
       "releaseYear": "Release Year",
       "caption": "Caption",
+      "image": "Image",
       "bandName": "Band Name",
       "bio": "Bio",
       "logoUrl": "Logo URL",
@@ -137,6 +152,14 @@
       "facebook": "Facebook",
       "email": "Email",
       "phone": "Phone"
+    },
+    "help": {
+      "ticketUrl": "Ticket purchase link (optional).",
+      "youtubeUrl": "Paste the full link: https://youtube.com/watch?v=...",
+      "coverUrl": "Paste a direct image link (right-click → copy image link).",
+      "logoUrl": "Paste a direct image link (PNG or SVG).",
+      "instagram": "Just the @ handle or the full link. E.g. @coresdosamba",
+      "galleryFile": "Formats: JPG, PNG, WebP. Max ~5 MB."
     }
   },
   "common": {

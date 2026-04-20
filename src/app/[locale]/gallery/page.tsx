@@ -1,8 +1,10 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Gallery from "@/components/sections/Gallery";
+import { getGalleryImages } from "@/lib/content";
 
-export default function GalleryPage() {
-  const t = useTranslations("gallery");
+export default async function GalleryPage() {
+  const t = await getTranslations("gallery");
+  const images = await getGalleryImages();
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <Gallery />
+      <Gallery images={images} />
     </>
   );
 }

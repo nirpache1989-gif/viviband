@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
 
           {error && (
             <p className="font-body text-xs text-red-400">
-              Invalid password. Try again.
+              {t("loginError")}
             </p>
           )}
 

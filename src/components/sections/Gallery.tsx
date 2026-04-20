@@ -123,7 +123,7 @@ export default function Gallery({ images, className }: GalleryProps) {
           onClick={() => setOpen(null)}
           aria-label="Fechar"
         >
-          \u00d7
+          ×
         </button>
         <div
           className="lightbox__inner"

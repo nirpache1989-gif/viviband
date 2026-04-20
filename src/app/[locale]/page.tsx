@@ -3,16 +3,16 @@ import Marquee from "@/components/sections/Marquee";
 import ShowsList from "@/components/sections/ShowsList";
 import MusicPlayer from "@/components/sections/MusicPlayer";
 import type { Show, Music } from "@/types/database";
+import { getShows, getMusic } from "@/lib/content";
 
-// Placeholder data until Supabase is wired with real content
-const placeholderShows: Show[] = [
+const FALLBACK_SHOWS: Show[] = [
   {
     id: "1",
     date: "2026-05-15T21:00:00Z",
     venue: "Coliseu dos Recreios",
     city: "Lisboa",
     country: "Portugal",
-    ticket_url: "#",
+    ticket_url: null,
     is_past: false,
     created_at: "",
   },
@@ -22,23 +22,23 @@ const placeholderShows: Show[] = [
     venue: "Hard Club",
     city: "Porto",
     country: "Portugal",
-    ticket_url: "#",
+    ticket_url: null,
     is_past: false,
     created_at: "",
   },
   {
     id: "3",
     date: "2026-07-02T22:00:00Z",
-    venue: "Pelourinho \u2014 Largo Tereza Batista",
+    venue: "Pelourinho — Largo Tereza Batista",
     city: "Salvador",
     country: "Brasil",
-    ticket_url: "#",
+    ticket_url: null,
     is_past: false,
     created_at: "",
   },
 ];
 
-const placeholderTracks: Music[] = [
+const FALLBACK_TRACKS: Music[] = [
   {
     id: "1",
     title: "Fogo Interior",
@@ -49,7 +49,7 @@ const placeholderTracks: Music[] = [
   },
   {
     id: "2",
-    title: "Rua Sem Sa\u00edda",
+    title: "Rua Sem Saída",
     youtube_url: null,
     cover_url: null,
     release_year: 2024,
@@ -57,7 +57,7 @@ const placeholderTracks: Music[] = [
   },
   {
     id: "3",
-    title: "Ians\u00e3 na Chuva",
+    title: "Iansã na Chuva",
     youtube_url: null,
     cover_url: null,
     release_year: 2024,
@@ -65,42 +65,46 @@ const placeholderTracks: Music[] = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [dbShows, dbTracks] = await Promise.all([getShows(), getMusic()]);
+  const shows = dbShows.length ? dbShows : FALLBACK_SHOWS;
+  const tracks = dbTracks.length ? dbTracks : FALLBACK_TRACKS;
+
   return (
     <>
       <Hero />
 
       <Marquee
         items={[
-          { label: "Pr\u00f3ximo \u00b7 Lisboa \u00b7 Coliseu dos Recreios", dotColor: "var(--c-magenta)" },
+          { label: "Próximo · Lisboa · Coliseu dos Recreios", dotColor: "var(--c-magenta)" },
           { label: "15 maio", italic: true },
-          { label: "Hard Club \u00b7 Porto", dotColor: "var(--c-amber)" },
+          { label: "Hard Club · Porto", dotColor: "var(--c-amber)" },
           { label: "20 junho", italic: true },
-          { label: "Pelourinho \u00b7 Salvador", dotColor: "var(--c-cyan)" },
+          { label: "Pelourinho · Salvador", dotColor: "var(--c-cyan)" },
           { label: "02 julho", italic: true },
         ]}
       />
 
-      <ShowsList shows={placeholderShows} preview />
+      <ShowsList shows={shows} preview />
 
       <Marquee
         reverse
         inverse
         items={[
-          { label: "ou\u00e7a", italic: true },
-          { label: "\u00b7" },
+          { label: "ouça", italic: true },
+          { label: "·" },
           { label: "FOGO INTERIOR" },
-          { label: "\u00b7" },
+          { label: "·" },
           { label: "novo single", italic: true },
-          { label: "\u00b7" },
-          { label: "RUA SEM SA\u00cdDA" },
-          { label: "\u00b7" },
-          { label: "spotify \u00b7 youtube \u00b7 tidal", italic: true },
-          { label: "\u00b7" },
+          { label: "·" },
+          { label: "RUA SEM SAÍDA" },
+          { label: "·" },
+          { label: "spotify · youtube · tidal", italic: true },
+          { label: "·" },
         ]}
       />
 
-      <MusicPlayer tracks={placeholderTracks} preview />
+      <MusicPlayer tracks={tracks} preview />
     </>
   );
 }

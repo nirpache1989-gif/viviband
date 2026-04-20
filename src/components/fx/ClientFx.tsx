@@ -13,7 +13,9 @@
  */
 
 import { useEffect, useRef } from "react";
-import TweaksPanel, { type SiteSettings, PALETTES } from "./TweaksPanel";
+import { usePathname } from "next/navigation";
+import TweaksPanel from "./TweaksPanel";
+import type { SiteSettings } from "@/lib/siteTheme";
 
 declare global {
   interface Window {
@@ -34,6 +36,8 @@ const TRAIL_PALETTES: Record<string, string[]> = {
 };
 
 export default function ClientFx({ isAdmin, initialSettings }: ClientFxProps) {
+  const pathname = usePathname();
+  const onAdminRoute = pathname?.includes("/admin") ?? false;
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -202,7 +206,7 @@ export default function ClientFx({ isAdmin, initialSettings }: ClientFxProps) {
       <div ref={ringRef} className="cursor-ring" aria-hidden />
       <div ref={dotRef} className="cursor-dot" aria-hidden />
       <div ref={curtainRef} className="fx-curtain" aria-hidden />
-      {isAdmin && (
+      {isAdmin && !onAdminRoute && (
         <TweaksPanel
           initial={initialSettings}
           onPaletteChange={handlePaletteChange}
@@ -212,5 +216,3 @@ export default function ClientFx({ isAdmin, initialSettings }: ClientFxProps) {
   );
 }
 
-export { PALETTES };
-export type { SiteSettings };

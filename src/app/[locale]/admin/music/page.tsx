@@ -5,16 +5,25 @@ import { useTranslations } from "next-intl";
 import type { Music } from "@/types/database";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import AdminStatus, {
+  type AdminStatusState,
+} from "@/components/admin/AdminStatus";
 
 export default function AdminMusicPage() {
   const t = useTranslations("admin");
   const [tracks, setTracks] = useState<Music[]>([]);
   const [editing, setEditing] = useState<Music | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [status, setStatus] = useState<AdminStatusState>("idle");
+  const [coverPreview, setCoverPreview] = useState<string>("");
 
   useEffect(() => {
     fetchTracks();
   }, []);
+
+  useEffect(() => {
+    setCoverPreview(editing?.cover_url ?? "");
+  }, [editing]);
 
   async function fetchTracks() {
     const res = await fetch("/api/admin/music");
@@ -42,29 +51,44 @@ export default function AdminMusicPage() {
         ) || null,
     };
 
-    const method = editing ? "PUT" : "POST";
-    await fetch("/api/admin/music", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    setEditing(null);
-    setIsAdding(false);
-    fetchTracks();
+    setStatus("saving");
+    try {
+      const method = editing ? "PUT" : "POST";
+      const res = await fetch("/api/admin/music", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("saved");
+      setEditing(null);
+      setIsAdding(false);
+      setCoverPreview("");
+      fetchTracks();
+      window.setTimeout(() => setStatus("idle"), 1500);
+    } catch {
+      setStatus("error");
+    }
   }
 
   async function handleDelete(id: string) {
     if (!confirm(t("confirmDelete"))) return;
-    await fetch("/api/admin/music", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    fetchTracks();
+    try {
+      const res = await fetch("/api/admin/music", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      fetchTracks();
+    } catch {
+      setStatus("error");
+    }
   }
 
   const showForm = isAdding || editing;
+  const coverLooksValid =
+    coverPreview.startsWith("http://") || coverPreview.startsWith("https://");
 
   return (
     <div>
@@ -103,17 +127,37 @@ export default function AdminMusicPage() {
                 defaultValue={editing?.youtube_url ?? ""}
                 className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
               />
+              <p className="mt-1 font-body text-[11px] text-text-secondary/70">
+                {t("help.youtubeUrl")}
+              </p>
             </div>
             <div>
               <label className="mb-1 block font-body text-xs uppercase tracking-[0.15em] text-text-secondary">
                 {t("fields.coverUrl")}
               </label>
-              <input
-                name="cover_url"
-                type="url"
-                defaultValue={editing?.cover_url ?? ""}
-                className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
-              />
+              <div className="flex items-center gap-3">
+                <input
+                  name="cover_url"
+                  type="url"
+                  defaultValue={editing?.cover_url ?? ""}
+                  onChange={(e) => setCoverPreview(e.target.value)}
+                  className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
+                />
+                {coverLooksValid && (
+                  <img
+                    src={coverPreview}
+                    alt=""
+                    className="h-10 w-10 shrink-0 border border-border object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
+                    }}
+                  />
+                )}
+              </div>
+              <p className="mt-1 font-body text-[11px] text-text-secondary/70">
+                {t("help.coverUrl")}
+              </p>
             </div>
             <div>
               <label className="mb-1 block font-body text-xs uppercase tracking-[0.15em] text-text-secondary">
@@ -128,9 +172,9 @@ export default function AdminMusicPage() {
                 className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
               />
             </div>
-            <div className="col-span-full flex gap-3 pt-2">
-              <Button type="submit" size="sm">
-                {t("save")}
+            <div className="col-span-full flex items-center gap-3 pt-2">
+              <Button type="submit" size="sm" disabled={status === "saving"}>
+                {status === "saving" ? "..." : t("save")}
               </Button>
               <Button
                 type="button"
@@ -139,10 +183,13 @@ export default function AdminMusicPage() {
                 onClick={() => {
                   setEditing(null);
                   setIsAdding(false);
+                  setCoverPreview("");
+                  setStatus("idle");
                 }}
               >
                 {t("cancel")}
               </Button>
+              <AdminStatus state={status} />
             </div>
           </form>
         </Card>

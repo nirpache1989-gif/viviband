@@ -1,15 +1,15 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import MusicPlayer from "@/components/sections/MusicPlayer";
 import type { Music } from "@/types/database";
+import { getMusic } from "@/lib/content";
 
-// Placeholder data shown until Supabase is configured and populated
-const placeholderTracks: Music[] = [
+const FALLBACK_TRACKS: Music[] = [
   { id: "1", title: "Fogo Interior", youtube_url: null, cover_url: null, release_year: 2026, created_at: "" },
-  { id: "2", title: "Rua Sem Sa\u00edda", youtube_url: null, cover_url: null, release_year: 2024, created_at: "" },
-  { id: "3", title: "Ians\u00e3 na Chuva", youtube_url: null, cover_url: null, release_year: 2024, created_at: "" },
-  { id: "4", title: "Festa de Yemanj\u00e1", youtube_url: null, cover_url: null, release_year: 2023, created_at: "" },
+  { id: "2", title: "Rua Sem Saída", youtube_url: null, cover_url: null, release_year: 2024, created_at: "" },
+  { id: "3", title: "Iansã na Chuva", youtube_url: null, cover_url: null, release_year: 2024, created_at: "" },
+  { id: "4", title: "Festa de Yemanjá", youtube_url: null, cover_url: null, release_year: 2023, created_at: "" },
   { id: "5", title: "Carnaval de Rua", youtube_url: null, cover_url: null, release_year: 2022, created_at: "" },
-  { id: "6", title: "Pelourinho \u00e0 Meia-Noite", youtube_url: null, cover_url: null, release_year: 2021, created_at: "" },
+  { id: "6", title: "Pelourinho à Meia-Noite", youtube_url: null, cover_url: null, release_year: 2021, created_at: "" },
   { id: "7", title: "Ladeira do Carmo", youtube_url: null, cover_url: null, release_year: 2021, created_at: "" },
   { id: "8", title: "Bahia de Todos os Santos", youtube_url: null, cover_url: null, release_year: 2020, created_at: "" },
   { id: "9", title: "Tambor do Pai", youtube_url: null, cover_url: null, release_year: 2020, created_at: "" },
@@ -21,27 +21,29 @@ const albums = [
     id: "a1",
     title: "Fogo Interior",
     year: 2026,
-    meta: "EP \u00b7 5 faixas",
+    meta: "EP · 5 faixas",
     gradient: "linear-gradient(135deg, var(--c-magenta), var(--c-violet))",
   },
   {
     id: "a2",
-    title: "Festa de Yemanj\u00e1",
+    title: "Festa de Yemanjá",
     year: 2023,
-    meta: "EP \u00b7 4 faixas",
+    meta: "EP · 4 faixas",
     gradient: "linear-gradient(135deg, var(--c-amber), var(--c-vermillion))",
   },
   {
     id: "a3",
     title: "Bahia de Todos os Santos",
     year: 2020,
-    meta: "EP \u00b7 5 faixas",
+    meta: "EP · 5 faixas",
     gradient: "linear-gradient(135deg, var(--c-cyan), var(--c-jade))",
   },
 ];
 
-export default function MusicPage() {
-  const t = useTranslations("music");
+export default async function MusicPage() {
+  const t = await getTranslations("music");
+  const dbTracks = await getMusic();
+  const tracks = dbTracks.length ? dbTracks : FALLBACK_TRACKS;
 
   return (
     <>
@@ -55,23 +57,23 @@ export default function MusicPage() {
             <span>{t("page.meta")}</span>
           </div>
           <h1 className="page-title">
-            M\u00fa<em>sica</em>
+            Mú<em>sica</em>
           </h1>
           <p className="page-lede">{t("page.lede")}</p>
         </div>
       </section>
 
-      <MusicPlayer tracks={placeholderTracks} full />
+      <MusicPlayer tracks={tracks} full />
 
       <section>
         <div className="container">
           <header className="section-head">
             <h2 className="section-head__title">
-              Lan\u00e7a<em>mentos</em>
+              Lança<em>mentos</em>
             </h2>
             <div className="section-head__meta">
               <strong>03 EPs</strong>
-              2018 \u2014 2026
+              2018 — 2026
             </div>
           </header>
 

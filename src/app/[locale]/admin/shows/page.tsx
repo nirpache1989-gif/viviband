@@ -5,12 +5,16 @@ import { useTranslations } from "next-intl";
 import type { Show } from "@/types/database";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import AdminStatus, {
+  type AdminStatusState,
+} from "@/components/admin/AdminStatus";
 
 export default function AdminShowsPage() {
   const t = useTranslations("admin");
   const [shows, setShows] = useState<Show[]>([]);
   const [editing, setEditing] = useState<Show | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [status, setStatus] = useState<AdminStatusState>("idle");
 
   useEffect(() => {
     fetchShows();
@@ -40,26 +44,38 @@ export default function AdminShowsPage() {
         .checked,
     };
 
-    const method = editing ? "PUT" : "POST";
-    await fetch("/api/admin/shows", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    setEditing(null);
-    setIsAdding(false);
-    fetchShows();
+    setStatus("saving");
+    try {
+      const method = editing ? "PUT" : "POST";
+      const res = await fetch("/api/admin/shows", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("saved");
+      setEditing(null);
+      setIsAdding(false);
+      fetchShows();
+      window.setTimeout(() => setStatus("idle"), 1500);
+    } catch {
+      setStatus("error");
+    }
   }
 
   async function handleDelete(id: string) {
     if (!confirm(t("confirmDelete"))) return;
-    await fetch("/api/admin/shows", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    fetchShows();
+    try {
+      const res = await fetch("/api/admin/shows", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      fetchShows();
+    } catch {
+      setStatus("error");
+    }
   }
 
   const showForm = isAdding || editing;
@@ -121,7 +137,7 @@ export default function AdminShowsPage() {
               </label>
               <input
                 name="country"
-                defaultValue={editing?.country ?? "Portugal"}
+                defaultValue={editing?.country ?? "Brasil"}
                 className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
               />
             </div>
@@ -135,6 +151,9 @@ export default function AdminShowsPage() {
                 defaultValue={editing?.ticket_url ?? ""}
                 className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
               />
+              <p className="mt-1 font-body text-[11px] text-text-secondary/70">
+                {t("help.ticketUrl")}
+              </p>
             </div>
             <div className="flex items-center gap-2 pt-6">
               <input
@@ -151,9 +170,9 @@ export default function AdminShowsPage() {
                 {t("fields.isPast")}
               </label>
             </div>
-            <div className="col-span-full flex gap-3 pt-2">
-              <Button type="submit" size="sm">
-                {t("save")}
+            <div className="col-span-full flex items-center gap-3 pt-2">
+              <Button type="submit" size="sm" disabled={status === "saving"}>
+                {status === "saving" ? "..." : t("save")}
               </Button>
               <Button
                 type="button"
@@ -162,10 +181,12 @@ export default function AdminShowsPage() {
                 onClick={() => {
                   setEditing(null);
                   setIsAdding(false);
+                  setStatus("idle");
                 }}
               >
                 {t("cancel")}
               </Button>
+              <AdminStatus state={status} />
             </div>
           </form>
         </Card>

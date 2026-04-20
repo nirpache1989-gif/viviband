@@ -1,6 +1,5 @@
 import { getSupabase } from "@/lib/supabase";
-import type { SiteSettings } from "@/components/fx/TweaksPanel";
-import { PALETTES } from "@/components/fx/TweaksPanel";
+import { PALETTES, type SiteSettings } from "@/lib/siteTheme";
 
 const DEFAULT_SETTINGS: SiteSettings = {
   palette: "neon",

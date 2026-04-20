@@ -15,6 +15,7 @@ const adminNav = [
   { href: "/admin/music", key: "music" },
   { href: "/admin/gallery", key: "gallery" },
   { href: "/admin/band-info", key: "bandInfo" },
+  { href: "/admin/contact", key: "contactInfo" },
 ] as const;
 
 export default function AdminLayout({ children }: AdminLayoutProps) {

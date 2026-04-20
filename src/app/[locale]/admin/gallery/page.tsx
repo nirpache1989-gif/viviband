@@ -5,16 +5,26 @@ import { useTranslations } from "next-intl";
 import type { GalleryImage } from "@/types/database";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import AdminStatus, {
+  type AdminStatusState,
+} from "@/components/admin/AdminStatus";
 
 export default function AdminGalleryPage() {
   const t = useTranslations("admin");
   const [images, setImages] = useState<GalleryImage[]>([]);
-  const [uploading, setUploading] = useState(false);
+  const [status, setStatus] = useState<AdminStatusState>("idle");
+  const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchImages();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   async function fetchImages() {
     const res = await fetch("/api/admin/gallery");
@@ -24,16 +34,21 @@ export default function AdminGalleryPage() {
     }
   }
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(file ? URL.createObjectURL(file) : null);
+  }
+
   async function handleUpload(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setUploading(true);
 
     const form = e.currentTarget;
-    const formData = new FormData();
     const file = (form.elements.namedItem("file") as HTMLInputElement)
       .files?.[0];
     if (!file) return;
 
+    const formData = new FormData();
     formData.append("file", file);
     formData.append(
       "caption_pt",
@@ -44,24 +59,37 @@ export default function AdminGalleryPage() {
       (form.elements.namedItem("caption_en") as HTMLInputElement).value
     );
 
-    await fetch("/api/admin/gallery", {
-      method: "POST",
-      body: formData,
-    });
-
-    form.reset();
-    setUploading(false);
-    fetchImages();
+    setStatus("saving");
+    try {
+      const res = await fetch("/api/admin/gallery", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) throw new Error();
+      setStatus("saved");
+      form.reset();
+      if (preview) URL.revokeObjectURL(preview);
+      setPreview(null);
+      fetchImages();
+      window.setTimeout(() => setStatus("idle"), 1500);
+    } catch {
+      setStatus("error");
+    }
   }
 
   async function handleDelete(image: GalleryImage) {
     if (!confirm(t("confirmDelete"))) return;
-    await fetch("/api/admin/gallery", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: image.id, image_url: image.image_url }),
-    });
-    fetchImages();
+    try {
+      const res = await fetch("/api/admin/gallery", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: image.id, image_url: image.image_url }),
+      });
+      if (!res.ok) throw new Error();
+      fetchImages();
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -73,18 +101,33 @@ export default function AdminGalleryPage() {
       {/* Upload form */}
       <Card hover={false} className="mb-8 p-6">
         <form onSubmit={handleUpload} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div>
+          <div className="sm:col-span-3">
             <label className="mb-1 block font-body text-xs uppercase tracking-[0.15em] text-text-secondary">
-              Image
+              {t("fields.image")}
             </label>
-            <input
-              ref={fileRef}
-              name="file"
-              type="file"
-              accept="image/*"
-              required
-              className="w-full font-body text-sm text-text-secondary file:mr-3 file:border file:border-border file:bg-bg-primary file:px-3 file:py-1.5 file:font-body file:text-xs file:uppercase file:tracking-[0.15em] file:text-text-secondary"
-            />
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <input
+                  ref={fileRef}
+                  name="file"
+                  type="file"
+                  accept="image/*"
+                  required
+                  onChange={handleFileChange}
+                  className="w-full font-body text-sm text-text-secondary file:mr-3 file:border file:border-border file:bg-bg-primary file:px-3 file:py-1.5 file:font-body file:text-xs file:uppercase file:tracking-[0.15em] file:text-text-secondary"
+                />
+                <p className="mt-1 font-body text-[11px] text-text-secondary/70">
+                  {t("help.galleryFile")}
+                </p>
+              </div>
+              {preview && (
+                <img
+                  src={preview}
+                  alt=""
+                  className="h-20 w-20 shrink-0 border border-border object-cover"
+                />
+              )}
+            </div>
           </div>
           <div>
             <label className="mb-1 block font-body text-xs uppercase tracking-[0.15em] text-text-secondary">
@@ -104,10 +147,11 @@ export default function AdminGalleryPage() {
               className="w-full border border-border bg-bg-primary px-3 py-2 font-body text-sm text-text-primary outline-none focus:border-accent"
             />
           </div>
-          <div className="sm:col-span-3">
-            <Button type="submit" size="sm" disabled={uploading}>
-              {uploading ? "..." : `+ ${t("upload")}`}
+          <div className="flex items-center gap-3 sm:col-span-3">
+            <Button type="submit" size="sm" disabled={status === "saving"}>
+              {status === "saving" ? "..." : `+ ${t("upload")}`}
             </Button>
+            <AdminStatus state={status} />
           </div>
         </form>
       </Card>

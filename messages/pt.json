@@ -96,6 +96,7 @@
   "admin": {
     "title": "Administração",
     "login": "Entrar",
+    "loginError": "Palavra-passe inválida. Tenta de novo.",
     "password": "Palavra-passe",
     "logout": "Sair",
     "dashboard": "Painel",
@@ -103,6 +104,7 @@
     "music": "Música",
     "gallery": "Galeria",
     "bandInfo": "Info da Banda",
+    "contactInfo": "Contato",
     "add": "Adicionar",
     "edit": "Editar",
     "delete": "Eliminar",
@@ -111,6 +113,18 @@
     "confirmDelete": "Tem a certeza que quer eliminar?",
     "upload": "Carregar",
     "noResults": "Sem resultados.",
+    "status": {
+      "saving": "Guardando…",
+      "saved": "Guardado",
+      "error": "Erro ao guardar"
+    },
+    "theme": {
+      "title": "Tema do Site",
+      "palette": "Paleta",
+      "font": "Tipografia",
+      "grain": "Ruído",
+      "liveEditHint": "Guarda para aplicar. Para editar ao vivo, abre o painel no canto inferior direito em qualquer página pública."
+    },
     "stats": {
       "upcomingShows": "Próximos shows",
       "totalTracks": "Faixas",
@@ -129,6 +143,7 @@
       "coverUrl": "URL Capa",
       "releaseYear": "Ano de Lançamento",
       "caption": "Legenda",
+      "image": "Imagem",
       "bandName": "Nome da Banda",
       "bio": "Biografia",
       "logoUrl": "URL do Logo",
@@ -137,6 +152,14 @@
       "facebook": "Facebook",
       "email": "Email",
       "phone": "Telefone"
+    },
+    "help": {
+      "ticketUrl": "Link para compra de ingressos (opcional).",
+      "youtubeUrl": "Cola o link completo: https://youtube.com/watch?v=...",
+      "coverUrl": "Cola o link direto da imagem (botão direito → copiar link da imagem).",
+      "logoUrl": "Cola o link direto de uma imagem (PNG ou SVG).",
+      "instagram": "Só o @ ou o link completo. Ex: @coresdosamba",
+      "galleryFile": "Formatos: JPG, PNG, WebP. Máximo ~5 MB."
     }
   },
   "common": {
