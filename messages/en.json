@@ -7,27 +7,54 @@
     "contact": "Contact"
   },
   "hero": {
-    "tagline": "Rock from within"
+    "eyebrow": "Est. 2018 — Salvador, BA",
+    "tagline": "an axé of our own",
+    "lede": "Seven musicians, twenty drums, one voice rising from Bahia. Samba-rock, axé, candomblé and sweat — what comes from within, from the ground and the saint.",
+    "cta": "Next show",
+    "coords": "S 12°58′ — W 38°30′",
+    "scroll": "Scroll",
+    "volume": "Vol. 04 — 2026"
   },
   "shows": {
     "title": "Shows",
     "upcoming": "Upcoming",
     "past": "Past",
-    "getTickets": "Get Tickets",
-    "noUpcoming": "No upcoming shows at the moment.",
+    "getTickets": "Tickets",
+    "viewAll": "See all shows",
+    "noUpcoming": "No upcoming shows right now.",
     "noPast": "No past shows yet.",
-    "date": "Date",
-    "venue": "Venue",
-    "city": "City"
+    "meta": {
+      "datas": "dates",
+      "confirmed": "Confirmed · 2026"
+    },
+    "page": {
+      "eyebrow": "Chapter 02 — schedule",
+      "lede": "From Bahia to Europe — check the upcoming dates and the stages where we've already spilled the sweat and the axé."
+    }
   },
   "music": {
     "title": "Music",
-    "watchVideo": "Watch Video",
-    "releaseYear": "Year"
+    "watchVideo": "Watch video",
+    "releaseYear": "Year",
+    "viewAll": "All music",
+    "meta": {
+      "tracks": "tracks",
+      "span": "Released · 2018–2026"
+    },
+    "page": {
+      "eyebrow": "Chapter 03 — discography",
+      "meta": "14 tracks · 3 EPs",
+      "lede": "From raw percussion to electric samba-rock. Spin the vinyl, feel the axé. Available on all platforms."
+    }
   },
   "gallery": {
     "title": "Gallery",
-    "close": "Close"
+    "close": "Close",
+    "page": {
+      "eyebrow": "Chapter 04 — photography",
+      "meta": "stage · backstage · street",
+      "lede": "Shots from the stage and the road. Click a photo to enlarge."
+    }
   },
   "contact": {
     "title": "Contact",
@@ -35,14 +62,36 @@
     "email": "Email",
     "subject": "Subject",
     "message": "Message",
-    "send": "Send",
+    "send": "Send message",
     "sending": "Sending...",
     "success": "Message sent successfully!",
-    "error": "Error sending message. Please try again."
+    "error": "Failed to send. Please try again.",
+    "info": {
+      "booking": "Booking",
+      "phone": "Phone",
+      "studio": "Studio",
+      "follow": "Follow"
+    },
+    "page": {
+      "eyebrow": "Chapter 05 — talk to us",
+      "meta": "booking · press · fans",
+      "lede": "Booking, press, partnerships or just to say hi — write to us. We answer every message."
+    }
   },
   "footer": {
-    "rights": "All rights reserved.",
-    "followUs": "Follow Us"
+    "rights": "All rights reserved",
+    "followUs": "Follow",
+    "location": "Salvador · Bahia · Brazil",
+    "cols": {
+      "site": "Site",
+      "listen": "Listen",
+      "newsletter": "Newsletter"
+    },
+    "newsletter": {
+      "subscribe": "Subscribe",
+      "press": "Press",
+      "epk": "EPK"
+    }
   },
   "admin": {
     "title": "Admin",
@@ -93,7 +142,7 @@
   "common": {
     "loading": "Loading...",
     "error": "An error occurred.",
-    "viewAll": "View All",
+    "viewAll": "View all",
     "back": "Back"
   }
 }

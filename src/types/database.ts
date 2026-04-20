@@ -7,6 +7,9 @@ export interface BandInfo {
   instagram: string | null;
   youtube: string | null;
   facebook: string | null;
+  site_palette: "neon" | "vinyl" | "tropical" | "dusk" | null;
+  site_display_font: "bricolage" | "bebas" | "anton" | "archivo" | null;
+  site_grain: number | null;
 }
 
 export interface Show {

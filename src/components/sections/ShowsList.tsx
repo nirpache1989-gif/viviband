@@ -1,107 +1,172 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { Show } from "@/types/database";
-import Button from "@/components/ui/Button";
 
 interface ShowsListProps {
   shows: Show[];
+  /** If true, renders as a homepage preview with a section-head + "view all" CTA. */
+  preview?: boolean;
+  /** If true, renders with upcoming/past tabs (used on /shows page). */
+  withTabs?: boolean;
   className?: string;
 }
 
-export default function ShowsList({ shows, className }: ShowsListProps) {
+function formatMonth(date: Date, locale: string) {
+  const m = date.toLocaleDateString(locale, { month: "long" });
+  return m.toUpperCase();
+}
+
+function formatDay(date: Date, locale: string) {
+  // Portuguese weekdays are "segunda-feira"; strip the "-feira" suffix.
+  const w = date.toLocaleDateString(locale, { weekday: "long" });
+  const first = w.split("-")[0];
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
+
+function ShowRow({ show, locale }: { show: Show; locale: string }) {
+  const date = new Date(show.date);
+  const day = date.getDate();
+  const month = formatMonth(date, locale);
+  const weekday = formatDay(date, locale);
+  const past = show.is_past;
+
+  return (
+    <article className={`show ${past ? "show--past" : ""}`.trim()} data-reveal>
+      <div className="show__date">
+        {day}
+        <span>{month}</span>
+      </div>
+      <div className="show__day">{weekday}</div>
+      <div className="show__venue">{show.venue}</div>
+      <div className="show__city">
+        {show.city} · {show.country}
+      </div>
+      {past ? (
+        <span className="show__cta show__cta--past">Encerrado</span>
+      ) : show.ticket_url ? (
+        <a
+          href={show.ticket_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="show__cta"
+        >
+          Bilhetes →
+        </a>
+      ) : (
+        <span className="show__cta show__cta--past">—</span>
+      )}
+    </article>
+  );
+}
+
+export default function ShowsList({
+  shows,
+  preview = false,
+  withTabs = false,
+  className,
+}: ShowsListProps) {
   const t = useTranslations("shows");
+  const locale = useLocale();
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
 
   const upcoming = shows.filter((s) => !s.is_past);
   const past = shows.filter((s) => s.is_past);
-  const displayed = tab === "upcoming" ? upcoming : past;
 
-  return (
-    <section data-animate="shows" className={className}>
-      <div className="mx-auto max-w-content px-6 py-[var(--section-padding)]">
-        {/* Section header */}
-        <div className="mb-12 flex items-end justify-between">
-          <h2 className="font-display text-5xl md:text-7xl">{t("title")}</h2>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setTab("upcoming")}
-              className={`font-body text-xs uppercase tracking-[0.2em] transition-colors ${
-                tab === "upcoming" ? "text-accent" : "text-text-secondary hover:text-text-primary"
-              }`}
-            >
-              {t("upcoming")}
-            </button>
-            <span className="text-border">/</span>
-            <button
-              onClick={() => setTab("past")}
-              className={`font-body text-xs uppercase tracking-[0.2em] transition-colors ${
-                tab === "past" ? "text-accent" : "text-text-secondary hover:text-text-primary"
-              }`}
-            >
-              {t("past")}
-            </button>
+  if (preview) {
+    // Homepage preview — 3 shows + header + CTA to full page
+    const items = upcoming.slice(0, 3);
+    return (
+      <section className={className}>
+        <div className="container">
+          <header className="section-head">
+            <h2 className="section-head__title">
+              Pró<em>ximos</em>
+              <br />
+              shows
+            </h2>
+            <div className="section-head__meta">
+              <strong>
+                {String(upcoming.length).padStart(2, "0")} {t("meta.datas")}
+              </strong>
+              {t("meta.confirmed")}
+            </div>
+          </header>
+
+          <div className="shows__list">
+            {items.length ? (
+              items.map((s) => <ShowRow key={s.id} show={s} locale={locale} />)
+            ) : (
+              <p
+                style={{
+                  padding: "60px 0",
+                  textAlign: "center",
+                  color: "var(--ink-dim)",
+                }}
+              >
+                {t("noUpcoming")}
+              </p>
+            )}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 40 }}>
+            <a href="/shows" className="hero__cta" style={{ display: "inline-flex" }}>
+              {t("viewAll")}
+              <span className="hero__cta-arrow">→</span>
+            </a>
           </div>
         </div>
+      </section>
+    );
+  }
 
-        {/* Shows list */}
-        {displayed.length === 0 ? (
-          <p className="py-16 text-center font-body text-sm text-text-secondary">
-            {tab === "upcoming" ? t("noUpcoming") : t("noPast")}
-          </p>
-        ) : (
-          <div className="divide-y divide-border">
-            {displayed.map((show) => {
-              const date = new Date(show.date);
-              const month = date
-                .toLocaleDateString("en", { month: "short" })
-                .toUpperCase();
-              const day = date.getDate();
-
-              return (
-                <div
-                  key={show.id}
-                  className="group flex flex-col gap-4 py-6 transition-colors hover:bg-bg-secondary/50 md:flex-row md:items-center md:px-4"
-                >
-                  {/* Date */}
-                  <div className="flex items-baseline gap-2 md:w-28 md:flex-col md:items-center md:gap-0">
-                    <span className="font-display text-3xl text-text-primary md:text-4xl">
-                      {day}
-                    </span>
-                    <span className="font-body text-xs uppercase tracking-[0.2em] text-accent">
-                      {month}
-                    </span>
-                  </div>
-
-                  {/* Venue & City */}
-                  <div className="flex-1">
-                    <p className="font-display text-xl text-text-primary">
-                      {show.venue}
-                    </p>
-                    <p className="font-body text-xs uppercase tracking-[0.15em] text-text-secondary">
-                      {show.city}, {show.country}
-                    </p>
-                  </div>
-
-                  {/* Ticket button */}
-                  {!show.is_past && show.ticket_url && (
-                    <a
-                      href={show.ticket_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="secondary" size="sm">
-                        {t("getTickets")}
-                      </Button>
-                    </a>
-                  )}
-                </div>
-              );
-            })}
+  if (withTabs) {
+    const displayed = tab === "upcoming" ? upcoming : past;
+    return (
+      <section style={{ paddingTop: 0 }} className={className}>
+        <div className="container">
+          <div className="tabs">
+            <button
+              className={`tab ${tab === "upcoming" ? "on" : ""}`}
+              onClick={() => setTab("upcoming")}
+            >
+              {t("upcoming")} · {String(upcoming.length).padStart(2, "0")}
+            </button>
+            <button
+              className={`tab ${tab === "past" ? "on" : ""}`}
+              onClick={() => setTab("past")}
+            >
+              {t("past")} · {String(past.length).padStart(2, "0")}
+            </button>
           </div>
-        )}
-      </div>
-    </section>
+
+          <div className="shows__list">
+            {displayed.length ? (
+              displayed.map((s) => <ShowRow key={s.id} show={s} locale={locale} />)
+            ) : (
+              <p
+                style={{
+                  padding: "60px 0",
+                  textAlign: "center",
+                  color: "var(--ink-dim)",
+                }}
+              >
+                {tab === "upcoming" ? t("noUpcoming") : t("noPast")}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Fallback — bare list
+  return (
+    <div className={`shows__list ${className ?? ""}`.trim()}>
+      {shows.map((s) => (
+        <ShowRow key={s.id} show={s} locale={locale} />
+      ))}
+    </div>
   );
 }

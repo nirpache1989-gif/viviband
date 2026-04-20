@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Galeria · Cores do Samba</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="gallery">
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero__meta-top" style="position: static; padding: 0; margin-bottom: 60px;">
+      <span>Capítulo 04 — fotografia</span>
+      <span>palco · bastidores · rua</span>
+    </div>
+    <h1 class="page-title">Ga<em>leria</em></h1>
+    <p class="page-lede">
+      Cliques do palco e da estrada. Clique numa foto para ampliar.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="container">
+    <div class="gallery__grid">
+      <div class="tile tile--a" data-zoom style="background: linear-gradient(135deg, var(--c-magenta), var(--c-violet));">
+        <div class="tile__caption">// foto principal — banda no palco</div>
+      </div>
+      <div class="tile tile--b" data-zoom style="background: linear-gradient(135deg, var(--c-amber), var(--c-vermillion));">
+        <div class="tile__caption">// percussão</div>
+      </div>
+      <div class="tile tile--c" data-zoom style="background: linear-gradient(135deg, var(--c-cyan), var(--c-jade));">
+        <div class="tile__caption">// público</div>
+      </div>
+      <div class="tile tile--d" data-zoom style="background: linear-gradient(135deg, var(--c-vermillion), var(--bg-mid));">
+        <div class="tile__caption">// vocal</div>
+      </div>
+      <div class="tile tile--e" data-zoom style="background: linear-gradient(135deg, var(--c-violet), var(--c-magenta));">
+        <div class="tile__caption">// bastidores</div>
+      </div>
+      <div class="tile tile--f" data-zoom style="background: linear-gradient(135deg, var(--c-jade), var(--c-cyan));">
+        <div class="tile__caption">// rua</div>
+      </div>
+      <div class="tile tile--g" data-zoom style="background: linear-gradient(135deg, var(--c-amber), var(--c-magenta));">
+        <div class="tile__caption">// cavaquinho</div>
+      </div>
+      <div class="tile tile--h" data-zoom style="background: linear-gradient(135deg, var(--c-vermillion), var(--c-violet));">
+        <div class="tile__caption">// retrato</div>
+      </div>
+      <div class="tile tile--i" data-zoom style="background: linear-gradient(135deg, var(--c-cyan), var(--c-magenta));">
+        <div class="tile__caption">// final do show</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox__close" id="lb-close" aria-label="Fechar">×</button>
+  <div class="lightbox__inner" id="lb-inner"></div>
+  <div class="lightbox__caption" id="lb-caption"></div>
+</div>
+
+<script type="application/json" id="tweak-defaults">
+{ "heroVariant": 1, "palette": "neon", "displayFont": "bricolage", "grain": 7 }
+</script>
+<script src="chrome.js"></script>
+<script src="app.js"></script>
+<script>
+  const lb = document.getElementById('lightbox');
+  const inner = document.getElementById('lb-inner');
+  const cap = document.getElementById('lb-caption');
+  document.querySelectorAll('[data-zoom]').forEach(tile => {
+    tile.addEventListener('click', () => {
+      inner.style.background = tile.style.background;
+      cap.textContent = tile.querySelector('.tile__caption').textContent;
+      lb.classList.add('open');
+    });
+  });
+  document.getElementById('lb-close').addEventListener('click', () => lb.classList.remove('open'));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+</script>
+</body>
+</html>

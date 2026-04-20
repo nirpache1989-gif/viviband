@@ -2,15 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import Button from "@/components/ui/Button";
 
-interface ContactFormProps {
-  className?: string;
-}
-
-export default function ContactForm({ className }: ContactFormProps) {
+export default function ContactForm() {
   const t = useTranslations("contact");
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+    "idle"
+  );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,123 +30,100 @@ export default function ContactForm({ className }: ContactFormProps) {
       if (!res.ok) throw new Error();
       setStatus("success");
       form.reset();
+      // Trigger fullscreen magenta curtain animation
+      window.fxCurtain?.();
     } catch {
       setStatus("error");
     }
   }
 
   return (
-    <section data-animate="contact" className={className}>
-      <div className="mx-auto max-w-content px-6 py-[var(--section-padding)]">
-        <h2 className="mb-12 font-display text-5xl md:text-7xl">
-          {t("title")}
-        </h2>
+    <div className="contact__wrap">
+      <form className="contact__form" onSubmit={handleSubmit}>
+        <div className="field">
+          <input type="text" id="name" name="name" placeholder=" " required />
+          <label htmlFor="name">{t("name")}</label>
+        </div>
+        <div className="field">
+          <input type="email" id="email" name="email" placeholder=" " required />
+          <label htmlFor="email">{t("email")}</label>
+        </div>
+        <div className="field">
+          <input type="text" id="subject" name="subject" placeholder=" " />
+          <label htmlFor="subject">{t("subject")}</label>
+        </div>
+        <div className="field">
+          <textarea id="message" name="message" placeholder=" " required />
+          <label htmlFor="message">{t("message")}</label>
+        </div>
+        <button
+          type="submit"
+          className="contact__submit"
+          disabled={status === "sending"}
+        >
+          {status === "sending" ? t("sending") : t("send")}
+          <span>\u2192</span>
+        </button>
 
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block font-body text-xs uppercase tracking-[0.2em] text-text-secondary"
-              >
-                {t("name")}
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="w-full border border-border bg-bg-secondary px-4 py-3 font-body text-sm text-text-primary outline-none transition-colors focus:border-accent"
-              />
-            </div>
+        {status === "success" && (
+          <p className="contact__status contact__status--ok">{t("success")}</p>
+        )}
+        {status === "error" && (
+          <p className="contact__status contact__status--err">{t("error")}</p>
+        )}
+      </form>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block font-body text-xs uppercase tracking-[0.2em] text-text-secondary"
-              >
-                {t("email")}
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="w-full border border-border bg-bg-secondary px-4 py-3 font-body text-sm text-text-primary outline-none transition-colors focus:border-accent"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="subject"
-                className="mb-2 block font-body text-xs uppercase tracking-[0.2em] text-text-secondary"
-              >
-                {t("subject")}
-              </label>
-              <input
-                id="subject"
-                name="subject"
-                type="text"
-                required
-                className="w-full border border-border bg-bg-secondary px-4 py-3 font-body text-sm text-text-primary outline-none transition-colors focus:border-accent"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="mb-2 block font-body text-xs uppercase tracking-[0.2em] text-text-secondary"
-              >
-                {t("message")}
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                required
-                className="w-full resize-none border border-border bg-bg-secondary px-4 py-3 font-body text-sm text-text-primary outline-none transition-colors focus:border-accent"
-              />
-            </div>
-
-            <div>
-              <Button type="submit" disabled={status === "sending"}>
-                {status === "sending" ? t("sending") : t("send")}
-              </Button>
-            </div>
-
-            {status === "success" && (
-              <p className="font-body text-sm text-accent">{t("success")}</p>
-            )}
-            {status === "error" && (
-              <p className="font-body text-sm text-red-400">{t("error")}</p>
-            )}
-          </form>
-
-          {/* Contact info — populated from Supabase later */}
-          <div className="flex flex-col justify-center gap-8 md:pl-12">
-            <div>
-              <h3 className="mb-2 font-display text-xl text-text-primary">
-                {t("email")}
-              </h3>
-              <p className="font-body text-sm text-text-secondary">
-                contact@coresdosamba.com
-              </p>
-            </div>
-            <div className="flex gap-6">
-              {["IG", "YT", "FB"].map((icon) => (
-                <a
-                  key={icon}
-                  href="#"
-                  className="font-body text-xs uppercase tracking-[0.2em] text-text-secondary transition-colors hover:text-accent"
-                >
-                  {icon}
-                </a>
-              ))}
-            </div>
+      <aside className="contact__info">
+        <div className="info-block">
+          <div className="info-block__label">{t("info.booking")}</div>
+          <div className="info-block__value">
+            <a href="mailto:contato@coresdosamba.com">
+              contato@coresdosamba.com
+            </a>
           </div>
         </div>
-      </div>
-    </section>
+        <div className="info-block">
+          <div className="info-block__label">{t("info.phone")}</div>
+          <div className="info-block__value">+55 71 9 8888 7777</div>
+        </div>
+        <div className="info-block">
+          <div className="info-block__label">{t("info.studio")}</div>
+          <div className="info-block__value">
+            Salvador, Bahia
+            <br />
+            Brasil
+          </div>
+        </div>
+        <div className="info-block">
+          <div className="info-block__label">{t("info.follow")}</div>
+          <div className="socials">
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+              </svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8 1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5 3-5 3z" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Spotify">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth={2} />
+                <path
+                  d="M7 10c3-1 7-1 10 1M7.5 13c2.5-.8 5.5-.8 8 .5M8 16c2-.5 4-.5 6 .3"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
   );
 }

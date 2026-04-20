@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ClientFx from "@/components/fx/ClientFx";
+import { getSiteSettings, renderSettingsStyle } from "@/lib/siteSettings";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Cores do Samba",
-  description: "Brazilian Samba Band",
+  description: "Brazilian Samba Band — Salvador, Bahia",
   icons: { icon: "/favicon.ico" },
 };
 
@@ -30,14 +33,29 @@ export default async function LocaleLayout({ children, params }: Props) {
     notFound();
   }
 
-  const messages = await getMessages();
+  const [messages, cookieStore, settings] = await Promise.all([
+    getMessages(),
+    cookies(),
+    getSiteSettings(),
+  ]);
+
+  const isAdmin = Boolean(cookieStore.get("admin-session")?.value);
+  const settingsCss = renderSettingsStyle(settings);
 
   return (
-    <html lang={locale} className="dark">
-      <body className="min-h-screen bg-bg-primary text-text-secondary font-body antialiased">
+    <html lang={locale}>
+      <head>
+        {/* SSR-inject palette + grain so visitors see the chosen look pre-hydration */}
+        <style
+          id="site-settings"
+          dangerouslySetInnerHTML={{ __html: settingsCss }}
+        />
+      </head>
+      <body>
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main className="min-h-screen">{children}</main>
+          <ClientFx isAdmin={isAdmin} initialSettings={settings} />
+          <Header locale={locale} />
+          <main>{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

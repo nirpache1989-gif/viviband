@@ -1,11 +1,10 @@
 import Hero from "@/components/sections/Hero";
+import Marquee from "@/components/sections/Marquee";
 import ShowsList from "@/components/sections/ShowsList";
 import MusicPlayer from "@/components/sections/MusicPlayer";
-import Button from "@/components/ui/Button";
-import { useTranslations } from "next-intl";
 import type { Show, Music } from "@/types/database";
 
-// Placeholder data until Supabase is wired
+// Placeholder data until Supabase is wired with real content
 const placeholderShows: Show[] = [
   {
     id: "1",
@@ -29,12 +28,12 @@ const placeholderShows: Show[] = [
   },
   {
     id: "3",
-    date: "2025-12-10T21:00:00Z",
-    venue: "Casa da Música",
-    city: "Porto",
-    country: "Portugal",
-    ticket_url: null,
-    is_past: true,
+    date: "2026-07-02T22:00:00Z",
+    venue: "Pelourinho \u2014 Largo Tereza Batista",
+    city: "Salvador",
+    country: "Brasil",
+    ticket_url: "#",
+    is_past: false,
     created_at: "",
   },
 ];
@@ -45,12 +44,20 @@ const placeholderTracks: Music[] = [
     title: "Fogo Interior",
     youtube_url: null,
     cover_url: null,
-    release_year: 2025,
+    release_year: 2026,
     created_at: "",
   },
   {
     id: "2",
-    title: "Rua Sem Saída",
+    title: "Rua Sem Sa\u00edda",
+    youtube_url: null,
+    cover_url: null,
+    release_year: 2024,
+    created_at: "",
+  },
+  {
+    id: "3",
+    title: "Ians\u00e3 na Chuva",
     youtube_url: null,
     cover_url: null,
     release_year: 2024,
@@ -59,27 +66,41 @@ const placeholderTracks: Music[] = [
 ];
 
 export default function HomePage() {
-  const t = useTranslations("common");
-
   return (
     <>
       <Hero />
 
-      {/* Shows preview */}
-      <ShowsList shows={placeholderShows.slice(0, 3)} />
-      <div className="flex justify-center pb-8">
-        <Button href="/shows" variant="ghost">
-          {t("viewAll")} &rarr;
-        </Button>
-      </div>
+      <Marquee
+        items={[
+          { label: "Pr\u00f3ximo \u00b7 Lisboa \u00b7 Coliseu dos Recreios", dotColor: "var(--c-magenta)" },
+          { label: "15 maio", italic: true },
+          { label: "Hard Club \u00b7 Porto", dotColor: "var(--c-amber)" },
+          { label: "20 junho", italic: true },
+          { label: "Pelourinho \u00b7 Salvador", dotColor: "var(--c-cyan)" },
+          { label: "02 julho", italic: true },
+        ]}
+      />
 
-      {/* Music preview */}
-      <MusicPlayer tracks={placeholderTracks} />
-      <div className="flex justify-center pb-16">
-        <Button href="/music" variant="ghost">
-          {t("viewAll")} &rarr;
-        </Button>
-      </div>
+      <ShowsList shows={placeholderShows} preview />
+
+      <Marquee
+        reverse
+        inverse
+        items={[
+          { label: "ou\u00e7a", italic: true },
+          { label: "\u00b7" },
+          { label: "FOGO INTERIOR" },
+          { label: "\u00b7" },
+          { label: "novo single", italic: true },
+          { label: "\u00b7" },
+          { label: "RUA SEM SA\u00cdDA" },
+          { label: "\u00b7" },
+          { label: "spotify \u00b7 youtube \u00b7 tidal", italic: true },
+          { label: "\u00b7" },
+        ]}
+      />
+
+      <MusicPlayer tracks={placeholderTracks} preview />
     </>
   );
 }

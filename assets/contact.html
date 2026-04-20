@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contato · Cores do Samba</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="contact">
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero__meta-top" style="position: static; padding: 0; margin-bottom: 60px;">
+      <span>Capítulo 05 — fala com a gente</span>
+      <span>booking · imprensa · fãs</span>
+    </div>
+    <h1 class="page-title">Con<em>tato</em></h1>
+    <p class="page-lede">
+      Booking, imprensa, parcerias ou só pra mandar um abraço — escreve aí.
+      A gente responde toda mensagem.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="container">
+    <div class="contact__wrap">
+      <form class="contact__form" onsubmit="event.preventDefault(); fxCurtain();">
+        <div class="field">
+          <input type="text" id="name" placeholder=" " required />
+          <label for="name">Nome</label>
+        </div>
+        <div class="field">
+          <input type="email" id="email" placeholder=" " required />
+          <label for="email">Email</label>
+        </div>
+        <div class="field">
+          <input type="text" id="subject" placeholder=" " />
+          <label for="subject">Assunto</label>
+        </div>
+        <div class="field">
+          <textarea id="message" placeholder=" " required></textarea>
+          <label for="message">Mensagem</label>
+        </div>
+        <button type="submit" class="contact__submit">
+          Enviar Mensagem →
+        </button>
+      </form>
+
+      <aside class="contact__info">
+        <div class="info-block">
+          <div class="info-block__label">Booking</div>
+          <div class="info-block__value"><a href="mailto:contato@coresdosamba.com">contato@coresdosamba.com</a></div>
+        </div>
+        <div class="info-block">
+          <div class="info-block__label">Telefone</div>
+          <div class="info-block__value">+55 71 9 8888 7777</div>
+        </div>
+        <div class="info-block">
+          <div class="info-block__label">Estúdio</div>
+          <div class="info-block__value">Salvador, Bahia<br/>Brasil</div>
+        </div>
+        <div class="info-block">
+          <div class="info-block__label">Siga</div>
+          <div class="socials">
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8 1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5 3-5 3z"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="Spotify">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M7 10c3-1 7-1 10 1M7.5 13c2.5-.8 5.5-.8 8 .5M8 16c2-.5 4-.5 6 .3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="tweak-defaults">
+{ "heroVariant": 1, "palette": "neon", "displayFont": "bricolage", "grain": 7 }
+</script>
+<script src="chrome.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

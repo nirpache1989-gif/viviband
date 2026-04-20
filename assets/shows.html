@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shows · Cores do Samba</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="shows">
+
+<!-- Page hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero__meta-top" style="position: static; padding: 0; margin-bottom: 60px;">
+      <span>Capítulo 02 — agenda</span>
+      <span data-clock>00:00 BRT</span>
+    </div>
+    <h1 class="page-title">Shows<br/><em>2026</em></h1>
+    <p class="page-lede">
+      Da Bahia até a Europa — confira as próximas datas e os palcos onde
+      já passamos o suor e o axé.
+    </p>
+  </div>
+</section>
+
+<!-- Tabs -->
+<section style="padding-top: 0;">
+  <div class="container">
+    <div class="tabs">
+      <button class="tab on" data-tab="upcoming">Próximos · 06</button>
+      <button class="tab" data-tab="past">Anteriores · 12</button>
+    </div>
+
+    <div class="shows__list" data-tab-content="upcoming">
+      <article class="show" data-reveal>
+        <div class="show__date">15<span>MAIO</span></div>
+        <div class="show__day">Sexta</div>
+        <div class="show__venue">Coliseu dos Recreios</div>
+        <div class="show__city">Lisboa · Portugal</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+      <article class="show" data-reveal>
+        <div class="show__date">20<span>JUNHO</span></div>
+        <div class="show__day">Sábado</div>
+        <div class="show__venue">Hard Club</div>
+        <div class="show__city">Porto · Portugal</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+      <article class="show" data-reveal>
+        <div class="show__date">02<span>JULHO</span></div>
+        <div class="show__day">Quinta</div>
+        <div class="show__venue">Pelourinho — Largo Tereza Batista</div>
+        <div class="show__city">Salvador · Brasil</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+      <article class="show" data-reveal>
+        <div class="show__date">14<span>JULHO</span></div>
+        <div class="show__day">Terça</div>
+        <div class="show__venue">Casa de Cultura</div>
+        <div class="show__city">Recife · Brasil</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+      <article class="show" data-reveal>
+        <div class="show__date">22<span>AGOSTO</span></div>
+        <div class="show__day">Sexta</div>
+        <div class="show__venue">Circo Voador</div>
+        <div class="show__city">Rio de Janeiro · Brasil</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+      <article class="show" data-reveal>
+        <div class="show__date">10<span>SETEMBRO</span></div>
+        <div class="show__day">Quinta</div>
+        <div class="show__venue">Sesc Pompeia</div>
+        <div class="show__city">São Paulo · Brasil</div>
+        <a href="#" class="show__cta">Bilhetes →</a>
+      </article>
+    </div>
+
+    <div class="shows__list" data-tab-content="past" hidden>
+      <article class="show show--past" data-reveal>
+        <div class="show__date">10<span>DEZ 25</span></div>
+        <div class="show__day">Quarta</div>
+        <div class="show__venue">Casa da Música</div>
+        <div class="show__city">Porto · Portugal</div>
+        <span class="show__cta show__cta--past">Encerrado</span>
+      </article>
+      <article class="show show--past" data-reveal>
+        <div class="show__date">22<span>NOV 25</span></div>
+        <div class="show__day">Sábado</div>
+        <div class="show__venue">Vibe Bar</div>
+        <div class="show__city">Salvador · Brasil</div>
+        <span class="show__cta show__cta--past">Encerrado</span>
+      </article>
+      <article class="show show--past" data-reveal>
+        <div class="show__date">30<span>OUT 25</span></div>
+        <div class="show__day">Quinta</div>
+        <div class="show__venue">Bar Brahma</div>
+        <div class="show__city">São Paulo · Brasil</div>
+        <span class="show__cta show__cta--past">Encerrado</span>
+      </article>
+      <article class="show show--past" data-reveal>
+        <div class="show__date">14<span>SET 25</span></div>
+        <div class="show__day">Domingo</div>
+        <div class="show__venue">Festival do Sol</div>
+        <div class="show__city">Salvador · Brasil</div>
+        <span class="show__cta show__cta--past">Encerrado</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="tweak-defaults">
+{ "heroVariant": 1, "palette": "neon", "displayFont": "bricolage", "grain": 7 }
+</script>
+<script src="chrome.js"></script>
+<script src="app.js"></script>
+<script>
+  // Simple tab switcher
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+      const k = t.dataset.tab;
+      document.querySelectorAll('[data-tab-content]').forEach(c => {
+        c.hidden = c.dataset.tabContent !== k;
+      });
+    });
+  });
+</script>
+</body>
+</html>

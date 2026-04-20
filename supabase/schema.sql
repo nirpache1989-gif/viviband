@@ -14,7 +14,10 @@ CREATE TABLE band_info (
   logo_url TEXT,
   instagram TEXT,
   youtube TEXT,
-  facebook TEXT
+  facebook TEXT,
+  site_palette TEXT DEFAULT 'neon',
+  site_display_font TEXT DEFAULT 'bricolage',
+  site_grain INTEGER DEFAULT 7
 );
 
 -- Insert default row

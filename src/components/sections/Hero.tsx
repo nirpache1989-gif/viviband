@@ -1,54 +1,72 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import KineticHeading from "@/components/fx/KineticHeading";
 
-interface HeroProps {
-  className?: string;
-}
-
-export default function Hero({ className }: HeroProps) {
+export default function Hero() {
   const t = useTranslations("hero");
+  const [clock, setClock] = useState("—:— BRT");
+
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      const utcMs = now.getTime() + now.getTimezoneOffset() * 60_000;
+      const brt = new Date(utcMs - 3 * 60 * 60 * 1000);
+      const hh = String(brt.getHours()).padStart(2, "0");
+      const mm = String(brt.getMinutes()).padStart(2, "0");
+      setClock(`${hh}:${mm} BRT`);
+    };
+    tick();
+    const id = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   return (
-    <section
-      data-animate="hero"
-      className={`relative flex min-h-screen items-center overflow-hidden ${className ?? ""}`}
-    >
-      {/* Background accent lines */}
-      <div className="absolute left-[10%] top-0 h-full w-px bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
-      <div className="absolute right-[15%] top-0 h-full w-px bg-gradient-to-b from-transparent via-border to-transparent" />
+    <section className="hero hero-v1" data-hero="1">
+      <div className="hero__meta-top">
+        <span>{t("eyebrow")}</span>
+        <span>{clock}</span>
+      </div>
 
-      <div className="relative mx-auto w-full max-w-content px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          {/* Band Name — asymmetric, left-aligned, grid-breaking */}
-          <div className="md:col-span-10 md:col-start-1">
-            <h1 className="font-display text-[clamp(5rem,18vw,14rem)] leading-[0.85] tracking-tight text-text-primary">
-              VIVI
-              <br />
-              <span className="ml-[10%] inline-block text-accent md:ml-[15%]">
-                BAND
-              </span>
-            </h1>
-          </div>
+      <div className="container">
+        <KineticHeading
+          rows={[
+            { words: [{ text: "CORES" }] },
+            {
+              words: [{ text: "DO" }],
+              extra: <span className="tagline">{t("tagline")}</span>,
+            },
+            { className: "row--samba", words: [{ text: "samba" }] },
+          ]}
+        />
 
-          {/* Tagline — offset to the right */}
-          <div className="md:col-span-4 md:col-start-8">
-            <div className="flex items-center gap-4">
-              <span className="h-px w-12 bg-accent" />
-              <p className="font-body text-xs uppercase tracking-[0.3em] text-text-secondary">
-                {t("tagline")}
-              </p>
-            </div>
-          </div>
+        <div className="hero__under">
+          <p
+            style={{
+              maxWidth: 420,
+              color: "var(--ink-dim)",
+              fontSize: 15,
+              lineHeight: 1.6,
+            }}
+          >
+            {t("lede")}
+          </p>
+          <Link href="/shows" className="hero__cta">
+            {t("cta")}
+            <span className="hero__cta-arrow">→</span>
+          </Link>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <div className="flex flex-col items-center gap-2">
-          <span className="font-body text-[10px] uppercase tracking-[0.3em] text-text-secondary">
-            Scroll
-          </span>
-          <div className="h-8 w-px animate-pulse bg-accent" />
+      <div className="hero__meta-bottom">
+        <span>{t("coords")}</span>
+        <div className="scroll-indicator">
+          <span>{t("scroll")}</span>
+          <div className="scroll-indicator__bar" />
         </div>
+        <span>{t("volume")}</span>
       </div>
     </section>
   );

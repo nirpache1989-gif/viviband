@@ -12,20 +12,30 @@ export default function LanguageToggle({ className }: LanguageToggleProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  function toggleLocale() {
-    const newLocale = locale === "pt" ? "en" : "pt";
-    router.replace(pathname, { locale: newLocale });
+  function go(target: "pt" | "en") {
+    if (target === locale) return;
+    router.replace(pathname, { locale: target });
   }
 
   return (
-    <button
-      onClick={toggleLocale}
-      className={`font-body text-xs uppercase tracking-[0.2em] text-text-secondary transition-colors hover:text-accent ${className ?? ""}`}
-      aria-label={locale === "pt" ? "Switch to English" : "Mudar para Português"}
-    >
-      <span className={locale === "pt" ? "text-text-primary" : ""}>PT</span>
-      <span className="mx-1 text-border">/</span>
-      <span className={locale === "en" ? "text-text-primary" : ""}>EN</span>
-    </button>
+    <div className={`nav__lang ${className ?? ""}`.trim()}>
+      <a
+        onClick={() => go("pt")}
+        className={locale === "pt" ? "on" : ""}
+        role="button"
+        aria-label="Português"
+      >
+        PT
+      </a>
+      /
+      <a
+        onClick={() => go("en")}
+        className={locale === "en" ? "on" : ""}
+        role="button"
+        aria-label="English"
+      >
+        EN
+      </a>
+    </div>
   );
 }

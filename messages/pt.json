@@ -1,48 +1,97 @@
 {
   "nav": {
     "home": "Início",
-    "shows": "Concertos",
+    "shows": "Shows",
     "music": "Música",
     "gallery": "Galeria",
-    "contact": "Contacto"
+    "contact": "Contato"
   },
   "hero": {
-    "tagline": "Rock que vem de dentro"
+    "eyebrow": "Est. 2018 — Salvador, BA",
+    "tagline": "um axé só nosso",
+    "lede": "Sete músicos, vinte tambores, uma só voz que sobe da Bahia. Samba-rock, axé, candomblé e suor — o que vem de dentro, do chão e do santo.",
+    "cta": "Próximo show",
+    "coords": "S 12°58′ — W 38°30′",
+    "scroll": "Role",
+    "volume": "Vol. 04 — 2026"
   },
   "shows": {
-    "title": "Concertos",
+    "title": "Shows",
     "upcoming": "Próximos",
     "past": "Anteriores",
     "getTickets": "Bilhetes",
-    "noUpcoming": "Sem concertos agendados de momento.",
-    "noPast": "Ainda sem concertos realizados.",
-    "date": "Data",
-    "venue": "Local",
-    "city": "Cidade"
+    "viewAll": "Ver todos os shows",
+    "noUpcoming": "Sem shows marcados no momento.",
+    "noPast": "Ainda sem shows realizados.",
+    "meta": {
+      "datas": "datas",
+      "confirmed": "Confirmadas · 2026"
+    },
+    "page": {
+      "eyebrow": "Capítulo 02 — agenda",
+      "lede": "Da Bahia até a Europa — confira as próximas datas e os palcos onde já passamos o suor e o axé."
+    }
   },
   "music": {
     "title": "Música",
-    "watchVideo": "Ver Vídeo",
-    "releaseYear": "Ano"
+    "watchVideo": "Ver vídeo",
+    "releaseYear": "Ano",
+    "viewAll": "Toda a música",
+    "meta": {
+      "tracks": "faixas",
+      "span": "Lançadas · 2018–2026"
+    },
+    "page": {
+      "eyebrow": "Capítulo 03 — discografia",
+      "meta": "14 faixas · 3 EPs",
+      "lede": "Da percussão crua ao samba-rock elétrico. Toque o vinil, sinta o axé. Disponível em todas as plataformas."
+    }
   },
   "gallery": {
     "title": "Galeria",
-    "close": "Fechar"
+    "close": "Fechar",
+    "page": {
+      "eyebrow": "Capítulo 04 — fotografia",
+      "meta": "palco · bastidores · rua",
+      "lede": "Cliques do palco e da estrada. Clique numa foto para ampliar."
+    }
   },
   "contact": {
-    "title": "Contacto",
+    "title": "Contato",
     "name": "Nome",
     "email": "Email",
     "subject": "Assunto",
     "message": "Mensagem",
-    "send": "Enviar",
-    "sending": "A enviar...",
+    "send": "Enviar mensagem",
+    "sending": "Enviando...",
     "success": "Mensagem enviada com sucesso!",
-    "error": "Erro ao enviar mensagem. Tente novamente."
+    "error": "Erro ao enviar. Tente novamente.",
+    "info": {
+      "booking": "Booking",
+      "phone": "Telefone",
+      "studio": "Estúdio",
+      "follow": "Siga"
+    },
+    "page": {
+      "eyebrow": "Capítulo 05 — fala com a gente",
+      "meta": "booking · imprensa · fãs",
+      "lede": "Booking, imprensa, parcerias ou só pra mandar um abraço — escreve aí. A gente responde toda mensagem."
+    }
   },
   "footer": {
-    "rights": "Todos os direitos reservados.",
-    "followUs": "Segue-nos"
+    "rights": "Todos os direitos reservados",
+    "followUs": "Siga",
+    "location": "Salvador · Bahia · Brasil",
+    "cols": {
+      "site": "Site",
+      "listen": "Ouça",
+      "newsletter": "Newsletter"
+    },
+    "newsletter": {
+      "subscribe": "Inscrever",
+      "press": "Imprensa",
+      "epk": "EPK"
+    }
   },
   "admin": {
     "title": "Administração",
@@ -50,7 +99,7 @@
     "password": "Palavra-passe",
     "logout": "Sair",
     "dashboard": "Painel",
-    "shows": "Concertos",
+    "shows": "Shows",
     "music": "Música",
     "gallery": "Galeria",
     "bandInfo": "Info da Banda",
@@ -63,7 +112,7 @@
     "upload": "Carregar",
     "noResults": "Sem resultados.",
     "stats": {
-      "upcomingShows": "Próximos Concertos",
+      "upcomingShows": "Próximos shows",
       "totalTracks": "Faixas",
       "galleryImages": "Fotos",
       "title": "Resumo"
@@ -74,7 +123,7 @@
       "city": "Cidade",
       "country": "País",
       "ticketUrl": "Link Bilhetes",
-      "isPast": "Concerto Passado",
+      "isPast": "Show passado",
       "trackTitle": "Título",
       "youtubeUrl": "URL YouTube",
       "coverUrl": "URL Capa",
@@ -91,9 +140,9 @@
     }
   },
   "common": {
-    "loading": "A carregar...",
+    "loading": "Carregando...",
     "error": "Ocorreu um erro.",
-    "viewAll": "Ver Tudo",
+    "viewAll": "Ver tudo",
     "back": "Voltar"
   }
 }

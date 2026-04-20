@@ -7,29 +7,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: {
-          primary: "var(--bg-primary)",
-          secondary: "var(--bg-secondary)",
-          elevated: "var(--bg-elevated)",
+        // New site tokens (Cores do Samba palette)
+        wine: {
+          deep: "var(--bg-deep)",
+          mid: "var(--bg-mid)",
+          elev: "var(--bg-elev)",
         },
-        text: {
-          primary: "var(--text-primary)",
-          secondary: "var(--text-secondary)",
+        ink: {
+          DEFAULT: "var(--ink)",
+          dim: "var(--ink-dim)",
+          faint: "var(--ink-faint)",
         },
         accent: {
-          DEFAULT: "var(--accent)",
-          hover: "var(--accent-hover)",
-          muted: "var(--accent-muted)",
+          DEFAULT: "var(--c-magenta)",
+          hover: "var(--c-amber)",
+          muted: "rgba(255, 31, 107, 0.15)",
+          magenta: "var(--c-magenta)",
+          cyan: "var(--c-cyan)",
+          violet: "var(--c-violet)",
+          vermillion: "var(--c-vermillion)",
+          amber: "var(--c-amber)",
+          jade: "var(--c-jade)",
         },
-        border: "var(--border)",
+        rule: "var(--rule)",
+        // Back-compat aliases so the admin panel keeps rendering with the new palette
+        bg: {
+          primary: "var(--bg-deep)",
+          secondary: "var(--bg-mid)",
+          elevated: "var(--bg-elev)",
+        },
+        text: {
+          primary: "var(--ink)",
+          secondary: "var(--ink-dim)",
+        },
+        border: "var(--rule)",
       },
       fontFamily: {
-        display: ["var(--font-display)", "sans-serif"],
-        body: ["var(--font-body)", "monospace"],
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        hand: ["var(--font-hand)", "cursive"],
       },
       maxWidth: {
-        content: "var(--content-width)",
-        narrow: "var(--content-narrow)",
+        content: "1480px",
+        narrow: "960px",
       },
     },
   },
